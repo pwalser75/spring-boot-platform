@@ -31,20 +31,19 @@ The current execution context of a task scope can also be propagated to other Th
 ```java
 // start a new task scope in the current thread
 TaskScope.init();
-        try{
-        // get access to the current task scope's execution contect
-        TaskScope.ExecutionContext executionContext=TaskScope.currentExecutionContext();
-
-        // load some data, parallel process it using the shared task scope
-        someStreamOfData
+try {
+    // get access to the current task scope's execution contect
+    TaskScope.ExecutionContext executionContext=TaskScope.currentExecutionContext();
+    
+    // load some data, parallel process it using the shared task scope
+    someStreamOfData
         .parallel()
         .forEach(it->executionContext.execute(doSomeOperationWith(it)))
         ...
-
-        }finally{
-        // stop the task scope, and release all beans associated with it
-        TaskScope.destroy();
-        }
+} finally {
+    // stop the task scope, and release all beans associated with it
+    TaskScope.destroy();
+}
 ```
 
 ### Access Logging
@@ -128,12 +127,11 @@ To obtain the `UserInfo`, use the `UserInfoProvider`:
 @Autowired
 private UserInfoProvider userInfoProvider;
 
-public void businessLogic(){
-
-        UserInfo userInfo=userInfoProvider.get();
-        // use the userInfo tenant to resolve tenant-specific configuration
-        // use the userInfo tenant and login to load data for that user
-        }
+public void businessLogic() {
+    UserInfo userInfo=userInfoProvider.get();
+    // use the userInfo tenant to resolve tenant-specific configuration
+    // use the userInfo tenant and login to load data for that user
+}
 ```
 
 During **development** time, two REST endpoints can be activated to work with JWTs (for local testing):
