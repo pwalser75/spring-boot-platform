@@ -177,6 +177,8 @@ public class TaskScope implements Scope {
 
         /**
          * Unchecked execution: execute checked and rethrow any exception as {@link RuntimeException}.
+         *
+         * @return T supplied value
          */
         default T supplyUnchecked() {
             try {
@@ -269,7 +271,9 @@ public class TaskScope implements Scope {
         /**
          * Execute a {@link CheckedSupplier} (compatible with {@link Callable}) in the task scope of the execution context.
          *
+         * @param <T>      generic type
          * @param supplier supplier, required
+         * @return supplied value
          */
         public <T> T execute(CheckedSupplier<T> supplier) {
             if (supplier == null) {

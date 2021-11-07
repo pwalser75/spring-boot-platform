@@ -7,8 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import static javax.persistence.GenerationType.SEQUENCE;
 import static ch.frostnova.test.app.notes.persistence.NoteEntity.SEQUENCE_NAME;
+import static javax.persistence.GenerationType.SEQUENCE;
 
 /**
  * Note Entity.

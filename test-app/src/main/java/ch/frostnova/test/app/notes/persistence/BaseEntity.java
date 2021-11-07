@@ -13,17 +13,15 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 @MappedSuperclass
 public abstract class BaseEntity<ID extends Serializable> {
 
-    protected abstract ID getId();
-
     @Version
     @Column(name = "VERSION", nullable = false)
     private Long version;
-
     @Column(name = "CREATED_ON", nullable = false)
     private OffsetDateTime created;
-
     @Column(name = "UPDATED_ON", nullable = false)
     private OffsetDateTime lastModified;
+
+    protected abstract ID getId();
 
     public Long getVersion() {
         return version;
