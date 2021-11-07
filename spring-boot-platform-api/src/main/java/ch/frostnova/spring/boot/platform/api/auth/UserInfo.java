@@ -41,7 +41,7 @@ import static java.util.stream.Collectors.joining;
  *     .tenant("test-tenant")
  *     .roles(Set.of("author", "publisher")
  *     .additionalClaims(login-device.id", "device-64738", "login-channel", "mobile")
- *     .build();</pre>
+ *     .build();
  * </code></pre>
  *
  * @author pwalser
