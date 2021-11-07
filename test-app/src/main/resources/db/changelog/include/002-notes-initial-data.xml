@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="002-note-initial-data" author="pwalser">
+
+        <insert schemaName="${schema}" tableName="NOTE">
+            <column name="ID" valueSequenceNext="${schema}.NOTE_SEQ"/>
+            <column name="VERSION" valueNumeric="1"/>
+            <column name="CREATED_ON" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="UPDATED_ON" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="TEXT" value="Si vis pacem, para bellum"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

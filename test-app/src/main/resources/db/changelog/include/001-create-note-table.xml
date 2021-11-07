@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="001-create-note-table" author="pwalser">
+
+        <createTable schemaName="${schema}" tableName="NOTE">
+            <column name="ID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="VERSION" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_ON" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TEXT" type="varchar(2048)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="001-create-note-sequence" author="pwalser">
+        <createSequence schemaName="${schema}" sequenceName="NOTE_SEQ" cycle="false" incrementBy="100"
+                        startValue="1000"/>
+    </changeSet>
+
+</databaseChangeLog>

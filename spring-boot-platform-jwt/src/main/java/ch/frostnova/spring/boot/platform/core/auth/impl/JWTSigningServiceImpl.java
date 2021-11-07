@@ -1,0 +1,62 @@
+package ch.frostnova.spring.boot.platform.core.auth.impl;
+
+import ch.frostnova.spring.boot.platform.api.auth.UserInfo;
+import ch.frostnova.spring.boot.platform.core.auth.JWTSigningService;
+import ch.frostnova.spring.boot.platform.core.auth.properties.SigningProperties;
+import io.jsonwebtoken.Jwts;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeSet;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+@ConditionalOnProperty(value = "ch.frostnova.platform.security.signing.private-key")
+public class JWTSigningServiceImpl implements JWTSigningService {
+
+    private final static String CLAIM_TENANT = "tenant";
+    private final static String CLAIM_SCOPE = "scope";
+
+    @Autowired
+    private Logger logger;
+
+    @Autowired
+    private SigningProperties signingProperties;
+
+    @Value("${info.app.name:spring}")
+    private String appName;
+
+    @PostConstruct
+    public void init() {
+
+        signingProperties.requirePublicKey();
+        logger.warn("{} is activated, service can issue self-signed JWT security tokens - do not use in production", getClass().getSimpleName());
+    }
+
+    @Override
+    public String createJWT(UserInfo userInfo, OffsetDateTime validFrom, Duration validity) {
+
+        return Jwts.builder()
+                .setIssuer(appName)
+                .setId(UUID.randomUUID().toString())
+                .setIssuedAt(Date.from(validFrom.toInstant()))
+                .setNotBefore(Date.from(validFrom.toInstant()))
+                .setExpiration(Date.from(validFrom.plus(validity).toInstant()))
+                .claim(CLAIM_TENANT, userInfo.getTenant())
+                .setSubject(userInfo.getLogin())
+                .claim(CLAIM_SCOPE, Optional.ofNullable(userInfo.getRoles()).map(TreeSet::new).orElse(null))
+                .addClaims(userInfo.getAdditionalClaims().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
+                .signWith(signingProperties.getKeyType().getSignatureAlgorithm(), signingProperties.requirePrivateKey())
+                .compact();
+    }
+}

@@ -1,5 +1,5 @@
 # Ignore build output files
-**/.gradle
+.gradle
 **/build/
 **/out/
 **/target/

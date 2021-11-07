@@ -1,0 +1,23 @@
+spring:profiles.active: performance-logging
+
+info:
+  app:
+    name: "frostnova-platform"
+
+spring:
+  main:
+    lazy-initialization: true
+  cache:
+    type: jcache
+    jcache:
+      provider: org.ehcache.jsr107.EhcacheCachingProvider
+      config: classpath:ehcache.xml
+
+# JWT authentication configuration
+ch.frostnova.platform.security:
+  auth: jwt
+  signing:
+    key-type: RSA
+    public-key: jwt.pub.pem
+    private-key: jwt.pem
+

@@ -1,0 +1,14 @@
+description = 'Spring Boot Platform Core'
+
+dependencies {
+
+    api project(':spring-boot-platform-api')
+
+    api libs.jackson
+    api libs.validation
+
+    implementation libs.springBoot
+
+    testImplementation libs.testbase
+    testImplementation libs.springBootTest
+}

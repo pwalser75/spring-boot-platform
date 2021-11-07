@@ -1,0 +1,75 @@
+info:
+  app:
+    name: "spring-boot-project"
+    description: "Example Spring-Boot Project"
+    version: "1.0.0-SNAPSHOT"
+
+# TLS configuration - enable HTTPS
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    protocol: TLSv1.2
+    enabled-protocols: TLSv1.1+TLSv1.2
+    ciphers: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+    key-alias: "test-server"
+    key-store: "classpath:server-keystore.jks"
+    key-store-password: "keystore"
+    key-password: "keystore"
+
+# HTTP port for redirection to HTTPS
+http.server.port: 8080
+
+# Persistence: datasource/JPA configuration
+spring:
+  cache:
+    type: jcache
+    jcache:
+      provider: org.ehcache.jsr107.EhcacheCachingProvider
+      config: classpath:ehcache.xml
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate.dialect: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: TEST
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    parameters:
+      schema: TEST
+
+# JWT authentication configuration
+ch.frostnova.platform.security:
+  auth: jwt
+  signing:
+    key-type: RSA
+    public-key: jwt.pub.pem
+    private-key: jwt.pem
+
+# Actuator configuration, expose /health, /info and /metrics endpoints
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure.include: health,info,metrics
+  endpoint.health.show-details: always
+
+# Custom application properties
+app:
+  test:
+    a: 123
+    b: 123.456
+    c: true
+    d: Test
+    e: [ ONE,TWO, THREE ]
+    f:
+    - first
+    - second
+    - third
