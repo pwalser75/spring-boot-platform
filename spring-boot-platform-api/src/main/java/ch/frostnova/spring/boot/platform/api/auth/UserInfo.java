@@ -23,8 +23,7 @@ import static java.util.stream.Collectors.joining;
  * The {@link UserInfo} can be obtained over the injectable {@link UserInfoProvider}.
  * <p>
  * For tests, UserInfo instances can be created using the <code>userInfo()</code> <b>builder</b> method:
- * <code>
- * <pre>
+ * <pre><code>
  * UserInfo userInfo = userInfo("USER-01").build();
  *
  * UserInfo userInfo = userInfo("USER-01").tenant("test-tenant").build();
@@ -43,7 +42,7 @@ import static java.util.stream.Collectors.joining;
  *     .roles(Set.of("author", "publisher")
  *     .additionalClaims(login-device.id", "device-64738", "login-channel", "mobile")
  *     .build();</pre>
- * </code>
+ * </code></pre>
  *
  * @author pwalser
  * @since 2021-11-07
