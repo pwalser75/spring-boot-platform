@@ -168,3 +168,45 @@ Build using the Gradle Wrapper:
 ```shell
 ./gradlew
 ```
+
+# Setting up JWT authentication
+
+JWTs (JSON Web Tokens) are used for authentication. For testing purpose, this app  
+contains a REST endpoint where JWT tokens can be issued for any user.
+
+Signing and verifying JWTs requires a **Key Pair** (**private key** for **signing**, **public key** for **verifying**).  
+An example key pair is already included and configured. To create your own key pair, use:
+
+* **For RSA 4096 key:**
+  ```bash  
+  ssh-keygen -t rsa -b 4096 -m PKCS8 -f jwt.pem 
+  openssl rsa -in jwt.pem -pubout -outform PEM -out jwt-pub.pem
+  ```  
+
+Do not enter a password (not required).
+
+* **For EC 256 key:**
+   ```bash  
+  ssh-keygen -t ecdsa -b 256 -m PKCS8 -f jwt.pem
+  openssl ec -in jwt.pem -pubout -outform PEM -out jwt-pub.pem
+  ```  
+
+Afterwards extract the private and public keys into separate files:
+
+```bash  
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in jwt.key -out jwt.pem -nocrypt  
+```  
+
+This yields the `jwt.pem` private key and `jwt.pub.pem` public key.
+
+In the configuration (`application-yml`), enable JWT authentication using:
+
+```yaml  
+ch.frostnova.platform.security:  
+ auth: jwt 
+ signing: 
+   public-key: jwt.pub.pem 
+   private-key: jwt.pem
+ ```
+- `public-key` is required to validate JWT tokens.
+- `private-key` is optional, if configured the application can issue arbitrary JWT tokens in the `/login` endpoint (only for testing - do not use for production. Refer to the swagger-ui for usage).

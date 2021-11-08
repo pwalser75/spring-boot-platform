@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.security.PrivateKey;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Date;
@@ -46,6 +47,8 @@ public class JWTSigningServiceImpl implements JWTSigningService {
     @Override
     public String createJWT(UserInfo userInfo, OffsetDateTime validFrom, Duration validity) {
 
+        PrivateKey privateKey = signingProperties.requirePrivateKey();
+
         return Jwts.builder()
                 .setIssuer(appName)
                 .setId(UUID.randomUUID().toString())
@@ -56,7 +59,7 @@ public class JWTSigningServiceImpl implements JWTSigningService {
                 .setSubject(userInfo.getLogin())
                 .claim(CLAIM_SCOPE, Optional.ofNullable(userInfo.getRoles()).map(TreeSet::new).orElse(null))
                 .addClaims(userInfo.getAdditionalClaims().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-                .signWith(signingProperties.getKeyType().getSignatureAlgorithm(), signingProperties.requirePrivateKey())
+                .signWith(signingProperties.getSignatureAlgorithm(), signingProperties.requirePrivateKey())
                 .compact();
     }
 }

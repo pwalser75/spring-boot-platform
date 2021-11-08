@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "ec-keys"})
 @SpringBootTest(classes = {TestConfig.class})
 @EnableConfigurationProperties
 public class JWTServiceTest {
@@ -78,7 +78,7 @@ public class JWTServiceTest {
 
         Collection<String> scopes = body.get("scope", Collection.class);
 
-        assertThat(issuer).isEqualTo("frostnova-platform");
+        assertThat(issuer).isEqualTo("spring-boot-platform-test");
         assertThat(tenant).isEqualTo("test-tenant");
         assertThat(subject).isEqualTo("test-user");
 

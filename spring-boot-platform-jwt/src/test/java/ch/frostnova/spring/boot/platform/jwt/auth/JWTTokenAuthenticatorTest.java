@@ -20,7 +20,7 @@ import static ch.frostnova.spring.boot.platform.api.auth.UserInfo.userInfo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "ec-keys"})
 @SpringBootTest(classes = {TestConfig.class})
 @EnableConfigurationProperties
 public class JWTTokenAuthenticatorTest {
@@ -32,7 +32,7 @@ public class JWTTokenAuthenticatorTest {
     private JWTSigningService jwtSigningService;
 
     @Test
-    public void test() {
+    public void shouldAuthenticate() {
 
         UserInfo request = userInfo("test-login")
                 .tenant("test-tenant")

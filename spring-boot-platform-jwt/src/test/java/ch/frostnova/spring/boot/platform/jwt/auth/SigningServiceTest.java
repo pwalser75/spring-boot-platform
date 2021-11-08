@@ -1,30 +1,20 @@
 package ch.frostnova.spring.boot.platform.jwt.auth;
 
 import ch.frostnova.spring.boot.platform.core.auth.SigningService;
-import ch.frostnova.spring.boot.platform.jwt.TestConfig;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@ActiveProfiles("test")
-@SpringBootTest(classes = {TestConfig.class})
-@EnableConfigurationProperties
-public class SigningServiceTest {
+public abstract class SigningServiceTest {
 
     @Autowired
     private SigningService signingService;
 
     @Test
-    public void testSigningAndVerification() throws Exception {
+    public void shouldSignAndVerifySuccessfully() throws Exception {
         byte[] data = new byte[12345];
         ThreadLocalRandom.current().nextBytes(data);
 
@@ -32,10 +22,33 @@ public class SigningServiceTest {
         assertThat(signature).isNotNull();
         assertThat(signature.length).isGreaterThan(0);
         assertThat(signingService.verify(data, signature)).isTrue();
+    }
+
+    @Test
+    public void shouldFailOnTamperedData() throws Exception {
+        byte[] data = new byte[12345];
+        ThreadLocalRandom.current().nextBytes(data);
+
+        byte[] signature = signingService.sign(data);
+
+        byte[] tamperedData = new byte[data.length];
+        System.arraycopy(data, 0, tamperedData, 0, signature.length);
+        int randomIndex = ThreadLocalRandom.current().nextInt(0, data.length);
+        tamperedData[randomIndex] = (byte) ~tamperedData[randomIndex];
+        assertThat(signingService.verify(tamperedData, signature)).isFalse();
+    }
+
+    @Test
+    public void shouldFailOnInvalidSignature() throws Exception {
+        byte[] data = new byte[12345];
+        ThreadLocalRandom.current().nextBytes(data);
+
+        byte[] signature = signingService.sign(data);
 
         byte[] fakeSignature = new byte[signature.length];
         System.arraycopy(signature, 0, fakeSignature, 0, signature.length);
-        fakeSignature[0] = (byte) ~signature[0];
+        int randomIndex = ThreadLocalRandom.current().nextInt(0, signature.length);
+        fakeSignature[randomIndex] = (byte) ~signature[randomIndex];
         assertThat(signingService.verify(data, fakeSignature)).isFalse();
     }
 }

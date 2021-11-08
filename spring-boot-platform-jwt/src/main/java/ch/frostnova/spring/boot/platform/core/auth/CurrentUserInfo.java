@@ -23,7 +23,7 @@ public class CurrentUserInfo implements UserInfoProvider {
     private UserInfo userInfo;
 
     public UserInfo getUserInfo() {
-        return Optional.of(userInfo).orElseGet(UserInfo::anonymous);
+        return Optional.ofNullable(userInfo).orElseGet(UserInfo::anonymous);
     }
 
     public void setUserInfo(UserInfo userInfo) {
