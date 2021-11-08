@@ -191,13 +191,7 @@ Do not enter a password (not required).
   openssl ec -in jwt.pem -pubout -outform PEM -out jwt-pub.pem
   ```  
 
-Afterwards extract the private and public keys into separate files:
-
-```bash  
-openssl pkcs8 -topk8 -inform PEM -outform PEM -in jwt.key -out jwt.pem -nocrypt  
-```  
-
-This yields the `jwt.pem` private key and `jwt.pub.pem` public key.
+This yields the `jwt.pem` private key and `jwt-pub.pem` public key.
 
 In the configuration (`application-yml`), enable JWT authentication using:
 
