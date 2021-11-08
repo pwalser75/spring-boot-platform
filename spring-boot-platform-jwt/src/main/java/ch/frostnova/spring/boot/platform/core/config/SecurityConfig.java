@@ -1,5 +1,6 @@
 package ch.frostnova.spring.boot.platform.core.config;
 
+import ch.frostnova.spring.boot.platform.core.auth.CurrentUserInfo;
 import ch.frostnova.spring.boot.platform.core.auth.TokenAuthenticator;
 import ch.frostnova.spring.boot.platform.core.auth.filter.TokenAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private Optional<TokenAuthenticator> tokenAuthenticator;
 
     @Autowired
+    private CurrentUserInfo currentUserInfo;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Override
@@ -50,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and();
 
         tokenAuthenticator.ifPresent(ta ->
-                httpSecurity.addFilterBefore(new TokenAuthenticationFilter(ta, objectMapper), UsernamePasswordAuthenticationFilter.class)
+                httpSecurity.addFilterBefore(new TokenAuthenticationFilter(ta, currentUserInfo, objectMapper), UsernamePasswordAuthenticationFilter.class)
         );
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

@@ -5,7 +5,6 @@ import ch.frostnova.spring.boot.platform.jwt.rest.interceptor.LoggingInterceptor
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
+import static org.springframework.http.HttpMethod.GET;
 
 @Component
 public class TestRestClient {
@@ -52,7 +52,20 @@ public class TestRestClient {
         if (jwt != null) {
             headers.setBearerAuth(jwt);
         }
-        ResponseEntity<UserInfo> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>("", headers), UserInfo.class);
+        ResponseEntity<UserInfo> response = restTemplate.exchange(url, GET, new HttpEntity<>(null, headers), UserInfo.class);
+        expectStatus(response, 200);
+        return response.getBody();
+    }
+
+    public String hello(String baseURL, String jwt) {
+        RestTemplate restTemplate = restTemplateBuilder().build();
+        String url = String.format("%s/hello", baseURL);
+
+        HttpHeaders headers = new HttpHeaders();
+        if (jwt != null) {
+            headers.setBearerAuth(jwt);
+        }
+        ResponseEntity<String> response = restTemplate.exchange(url, GET, new HttpEntity<>(null, headers), String.class);
         expectStatus(response, 200);
         return response.getBody();
     }

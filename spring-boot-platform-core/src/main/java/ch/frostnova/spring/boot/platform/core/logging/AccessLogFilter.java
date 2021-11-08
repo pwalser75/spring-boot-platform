@@ -22,6 +22,9 @@ import java.util.Optional;
 
 /**
  * Servlet filter logging HTTP access (method, URI) with response code and execution time.
+ *
+ * @author pwalser
+ * @since 2011-08-17
  */
 @Component
 @Order(1)
@@ -36,12 +39,12 @@ public class AccessLogFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-
+        // unused
     }
 
     @Override
     public void destroy() {
-
+        // unused
     }
 
     @Override

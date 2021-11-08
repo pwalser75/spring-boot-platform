@@ -13,6 +13,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 
+import static java.lang.Integer.MIN_VALUE;
+
 /**
  * Servlet filter which activates the task scope on request level.
  *
@@ -20,20 +22,19 @@ import java.io.IOException;
  * @since 2019-11-03
  */
 @Component
-@Order(1)
+@Order(MIN_VALUE)
 public class TaskScopeRequestScopeFilter implements Filter {
-
 
     private final static Logger logger = LoggerFactory.getLogger(TaskScopeRequestScopeFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) {
-
+        // unused
     }
 
     @Override
     public void destroy() {
-
+        // unused
     }
 
     @Override
@@ -45,7 +46,7 @@ public class TaskScopeRequestScopeFilter implements Filter {
             return;
         }
         TaskScope.init();
-        final String conversationId = TaskScope.currentConversationId();
+        String conversationId = TaskScope.currentConversationId();
         try {
             logger.debug("Task scope created for request: {}", conversationId);
             chain.doFilter(request, response);
@@ -53,6 +54,5 @@ public class TaskScopeRequestScopeFilter implements Filter {
             TaskScope.destroy();
             logger.debug("Task scope destroyed for request: {}", conversationId);
         }
-
     }
 }

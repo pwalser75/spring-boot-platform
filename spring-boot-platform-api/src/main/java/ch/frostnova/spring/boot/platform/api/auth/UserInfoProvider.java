@@ -8,5 +8,5 @@ package ch.frostnova.spring.boot.platform.api.auth;
  */
 public interface UserInfoProvider {
 
-    UserInfo get();
+    UserInfo getUserInfo();
 }

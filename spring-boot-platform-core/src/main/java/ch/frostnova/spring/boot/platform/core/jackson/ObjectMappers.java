@@ -15,13 +15,20 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_SINGLE_E
 
 /**
  * Object mappers. Currently, only supports JSON, but other formats such as YAML and XML could be added here as well.
+ *
+ * @author pwalser
+ * @since 2011-08-17
  */
 public final class ObjectMappers {
 
     private ObjectMappers() {
-
     }
 
+    /**
+     * Create the JSON object mapper.
+     *
+     * @return JSON object mapper
+     */
     public static ObjectMapper json() {
         return configure(new ObjectMapper()
                 .setAnnotationIntrospector(new JacksonAnnotationIntrospector()));

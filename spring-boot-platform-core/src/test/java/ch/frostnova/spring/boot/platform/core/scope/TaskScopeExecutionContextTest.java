@@ -230,7 +230,7 @@ public class TaskScopeExecutionContextTest {
 
     @Test
     public void testRequiresRunnable() {
-        TaskScope.CheckedRunnable runnable = null;
+        CheckedRunnable runnable = null;
         assertThatThrownBy(() -> TaskScope.newExecutionContext().execute(runnable)).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -254,7 +254,7 @@ public class TaskScopeExecutionContextTest {
 
     @Test
     public void testRequiresSupplier() {
-        TaskScope.CheckedSupplier<String> supplier = null;
+        CheckedSupplier<String> supplier = null;
         assertThatThrownBy(() -> TaskScope.newExecutionContext().execute(supplier)).isInstanceOf(IllegalArgumentException.class);
     }
 

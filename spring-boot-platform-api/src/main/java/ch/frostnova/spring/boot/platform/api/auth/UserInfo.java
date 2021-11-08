@@ -1,6 +1,7 @@
 package ch.frostnova.spring.boot.platform.api.auth;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -116,10 +117,12 @@ public class UserInfo {
         return additionalClaims;
     }
 
+    @JsonIgnore
     public boolean isAnonymous() {
-        return this == ANONYMOUS;
+        return equals(ANONYMOUS);
     }
 
+    @JsonIgnore
     public boolean isAuthenticated() {
         return !isAnonymous();
     }

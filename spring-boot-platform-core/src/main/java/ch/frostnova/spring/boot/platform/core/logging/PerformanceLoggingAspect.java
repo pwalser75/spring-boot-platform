@@ -9,13 +9,14 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+
+import static java.math.RoundingMode.HALF_EVEN;
 
 /**
  * Performance logging aspect, logs performance and result state (ok or exception) for (nested) service calls.<br> Activated by profile
@@ -84,7 +85,7 @@ public class PerformanceLoggingAspect {
         private final Deque<InvocationInfo> invocationStack = new LinkedList<>();
         private final Deque<AtomicLong> nestedTime = new LinkedList<>();
 
-        public static PerformanceLoggingContext current() {
+        static PerformanceLoggingContext current() {
             PerformanceLoggingContext context = current.get();
             if (context == null) {
                 context = new PerformanceLoggingContext();
@@ -93,11 +94,7 @@ public class PerformanceLoggingAspect {
             return context;
         }
 
-        public boolean isIntermediateInvocation() {
-            return invocationStack.size() > 0;
-        }
-
-        public void enter(String invocation) {
+        void enter(String invocation) {
             long time = System.nanoTime();
             InvocationInfo invocationInfo = new InvocationInfo(invocationStack.size(), invocation, time);
             invocations.add(invocationInfo);
@@ -105,11 +102,7 @@ public class PerformanceLoggingAspect {
             nestedTime.push(new AtomicLong());
         }
 
-        public void exit() {
-            exit(null);
-        }
-
-        public void exit(Throwable t) {
+        void exit(Throwable t) {
             long time = System.nanoTime();
             if (invocationStack.isEmpty()) {
                 throw new IllegalStateException("No invocation in progress");
@@ -212,7 +205,7 @@ public class PerformanceLoggingAspect {
         }
 
         private String formatTimeMs(long timeNs) {
-            return BigDecimal.valueOf(timeNs * 0.000001).setScale(2, RoundingMode.HALF_EVEN) + " ms";
+            return BigDecimal.valueOf(timeNs * 0.000001).setScale(2, HALF_EVEN) + " ms";
         }
     }
 }

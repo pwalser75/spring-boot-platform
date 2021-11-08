@@ -1,7 +1,7 @@
 package ch.frostnova.spring.boot.platform.core.auth.controller;
 
 import ch.frostnova.spring.boot.platform.api.auth.UserInfo;
-import ch.frostnova.spring.boot.platform.core.auth.AuthorizationService;
+import ch.frostnova.spring.boot.platform.api.auth.UserInfoProvider;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserInfoController {
 
     @Autowired
-    private AuthorizationService authorizationService;
+    private UserInfoProvider userInfoProvider;
 
     @ApiOperation(value = "Exposes information for the current user", response = UserInfo.class)
     @ApiImplicitParam(name = "Authorization", value = "Authorization header, e.g. \"Bearer {access-token}\"", required = true, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
@@ -34,6 +34,6 @@ public class UserInfoController {
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public UserInfo getUserInfo() {
-        return authorizationService.getUserInfo();
+        return userInfoProvider.getUserInfo();
     }
 }

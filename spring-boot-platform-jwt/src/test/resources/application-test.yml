@@ -21,4 +21,4 @@ ch.frostnova.platform.security:
 
 logging:
   level:
-    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    ch.frostnova.spring.boot.platform.jwt.rest.interceptor.LoggingInterceptor: DEBUG

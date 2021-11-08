@@ -134,64 +134,6 @@ public class TaskScope implements Scope {
     }
 
     /**
-     * Functional interface for a runnable which can throw a checked exception.
-     */
-    @FunctionalInterface
-    public interface CheckedRunnable {
-
-        /**
-         * Functional contract
-         *
-         * @throws Exception optional exception
-         */
-        void run() throws Throwable;
-
-
-        /**
-         * Unchecked execution: execute checked and rethrow any exception as {@link RuntimeException}.
-         */
-        default void runUnchecked() {
-            try {
-                run();
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-    }
-
-    /**
-     * Functional interface for a supplier which can throw a checked exception. (same as {@link Callable}).
-     */
-    @FunctionalInterface
-    public interface CheckedSupplier<T> {
-
-        /**
-         * Functional contract
-         *
-         * @return return value
-         * @throws Exception optional exception
-         */
-        T supply() throws Throwable;
-
-        /**
-         * Unchecked execution: execute checked and rethrow any exception as {@link RuntimeException}.
-         *
-         * @return T supplied value
-         */
-        default T supplyUnchecked() {
-            try {
-                return supply();
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-    }
-
-    /**
      * The scope instance contains the registry of scoped objects, and the destruction callbacks
      * for those objects, to be called when the scope is destroyed.
      * Calling the destruction callbacks will have the dependency injection framework invoke

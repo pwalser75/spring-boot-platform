@@ -9,14 +9,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 /**
- * Injectable Logger config
+ * Allows {@link Logger} to be injected using <code>@Autowired</code>.
+ *
+ * @author pwalser
+ * @since 2011-08-17
  */
 @Configuration
 public class LoggerConfig {
 
     @Bean
     @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-    Logger logger(InjectionPoint injectionPoint) {
+    public Logger logger(InjectionPoint injectionPoint) {
         return LoggerFactory.getLogger(injectionPoint.getField().getDeclaringClass());
     }
 }
