@@ -1,15 +1,33 @@
 package ch.frostnova.spring.boot.platform.api.auth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
 import static ch.frostnova.spring.boot.platform.api.auth.UserInfo.anonymous;
 import static ch.frostnova.spring.boot.platform.api.auth.UserInfo.userInfo;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+import static com.fasterxml.jackson.databind.DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
+import static com.fasterxml.jackson.databind.DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+/**
+ * Tests for the {@link UserInfo}.
+ *
+ * @author pwalser
+ * @since 2021-11-07
+ */
 public class UserInfoTest {
 
     @Test
@@ -132,5 +150,42 @@ public class UserInfoTest {
         assertThat(b.toString()).isEqualTo("UserInfo{login=USER-01, tenant=test-tenant, roles=author/publisher}");
         assertThat(c.toString()).isEqualTo("UserInfo{login=USER-01, tenant=test-tenant, roles=channel-admin}");
         assertThat(anonymous().toString()).isEqualTo("UserInfo{login=anonymous, authenticated=false}");
+    }
+
+    @Test
+    public void shouldSerializeAndDeserialize() throws IOException {
+
+        UserInfo userInfo = userInfo("USER-01")
+                .tenant("test-tenant")
+                .role("channel-admin")
+                .additionalClaim("login-device-id", "device-56789")
+                .additionalClaim("login-channel", "web")
+                .build();
+
+        String json = objectMapper().writeValueAsString(userInfo);
+        System.out.println(json);
+
+        UserInfo restored = objectMapper().readValue(json, UserInfo.class);
+        assertThat(restored).isEqualTo(userInfo);
+        assertThat(restored.getLogin()).isEqualTo(userInfo.getLogin());
+        assertThat(restored.getTenant()).isEqualTo(userInfo.getTenant());
+        assertThat(restored.getRoles()).isEqualTo(userInfo.getRoles());
+        assertThat(restored.getAdditionalClaims()).isEqualTo(userInfo.getAdditionalClaims());
+        assertThat(restored.isAuthenticated()).isEqualTo(userInfo.isAuthenticated());
+        assertThat(restored.isAnonymous()).isEqualTo(userInfo.isAnonymous());
+    }
+
+    public static ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .setAnnotationIntrospector(new JacksonAnnotationIntrospector())
+                .registerModule(new JavaTimeModule())
+                .setDateFormat(new StdDateFormat())
+                .enable(INDENT_OUTPUT)
+                .enable(ACCEPT_SINGLE_VALUE_AS_ARRAY)
+                .enable(ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+                .disable(WRITE_DATES_AS_TIMESTAMPS)
+                .disable(WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED)
+                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .setSerializationInclusion(NON_EMPTY);
     }
 }

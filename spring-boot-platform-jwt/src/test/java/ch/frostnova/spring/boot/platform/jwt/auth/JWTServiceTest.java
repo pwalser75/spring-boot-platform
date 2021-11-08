@@ -48,6 +48,7 @@ public class JWTServiceTest {
     private CacheManager cacheManager;
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGenerateJWT() {
 
         Duration duration = Duration.of(42, ChronoUnit.MINUTES);
