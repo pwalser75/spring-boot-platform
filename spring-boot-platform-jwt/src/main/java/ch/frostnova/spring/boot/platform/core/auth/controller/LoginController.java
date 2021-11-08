@@ -49,7 +49,7 @@ public class LoginController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "ok")
     })
-    @GetMapping(path = "/{tenant}/{user}", produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(path = "/{tenant}/{user}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String login(@ApiParam(value = "Tenant id, required")
                         @PathVariable("tenant") @NotBlank String tenant,
                         @ApiParam(value = "User id (subject), required")

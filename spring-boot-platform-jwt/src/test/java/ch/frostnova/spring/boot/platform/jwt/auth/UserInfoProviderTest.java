@@ -20,6 +20,7 @@ public class UserInfoProviderTest {
 
     private void foo() {
 
+        //TODO
         UserInfo userInfo = userInfoProvider.get();
 
     }

@@ -30,9 +30,9 @@ import java.util.regex.Pattern;
 import static ch.frostnova.spring.boot.platform.api.auth.UserInfo.anonymous;
 import static java.util.stream.Collectors.toSet;
 
-public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
+public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private final static Logger logger = LoggerFactory.getLogger(BearerTokenAuthenticationFilter.class);
+    private final static Logger logger = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
 
     private final static Pattern BEARER_TOKEN_PATTERN = Pattern.compile("Bearer (.+)");
     private final static String MDC_KEY_TENANT = "tenant";
@@ -41,7 +41,7 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
     private final TokenAuthenticator tokenAuthenticator;
     private final ObjectMapper objectMapper;
 
-    public BearerTokenAuthenticationFilter(TokenAuthenticator tokenAuthenticator, ObjectMapper objectMapper) {
+    public TokenAuthenticationFilter(TokenAuthenticator tokenAuthenticator, ObjectMapper objectMapper) {
         this.tokenAuthenticator = tokenAuthenticator;
         this.objectMapper = objectMapper;
     }

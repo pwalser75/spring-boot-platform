@@ -114,7 +114,7 @@ NotesController.update(..) -> 2.13 ms, self: 0.91 ms
 
 ### JWT authentication
 
-Authentication using **JWT** (JSON Web Tokens). The `BearerTokenAuthenticationFilter` will use a JWT supplied using the
+Authentication using **JWT** (JSON Web Tokens). The `TokenAuthenticationFilter` will use a JWT supplied using the
 `Autentication: Bearer {JWT}` request header to identify the user for a request, validate the JWT (signature, expiry
 date/time)
 and then make that information available to all services during that request.

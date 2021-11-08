@@ -73,7 +73,6 @@ public class TaskScopeExecutionContextTest {
         ExecutorService executorService = Executors.newFixedThreadPool(8);
         List<Future<String>> futures = new LinkedList<>();
 
-
         for (int i = 0; i < 100; i++) {
             futures.add(executorService.submit(() -> executionContext.execute(() -> {
                 assertThat(TaskScope.isActive()).isTrue();

@@ -61,7 +61,7 @@ public class UserInfoTest {
                 .tenant("test-tenant")
                 .roles(Set.of("PUBLISHER", "Reviewer"))
                 .role("author")
-                .additionalClaims(Map.of("login-device.id", "device-64738", "login-channel", "mobile"))
+                .additionalClaims(Map.of("login-device-id", "device-64738", "login-channel", "mobile"))
                 .additionalClaim("prospect", "yes")
                 .build();
         assertThat(userInfo).isNotNull();
@@ -70,7 +70,7 @@ public class UserInfoTest {
         assertThat(userInfo.getLogin()).isEqualTo("USER 01");
         assertThat(userInfo.getTenant()).isEqualTo("test-tenant");
         assertThat(userInfo.getRoles()).containsExactlyInAnyOrder("author", "PUBLISHER", "Reviewer");
-        assertThat(userInfo.getAdditionalClaims()).isEqualTo(Map.of("prospect", "yes", "login-device.id", "device-64738", "login-channel", "mobile"));
+        assertThat(userInfo.getAdditionalClaims()).isEqualTo(Map.of("prospect", "yes", "login-device-id", "device-64738", "login-channel", "mobile"));
     }
 
     @Test
@@ -98,14 +98,14 @@ public class UserInfoTest {
                 .tenant("test-tenant")
                 .role("author")
                 .role("publisher")
-                .additionalClaim("login-device.id", "device-12345")
+                .additionalClaim("login-device-id", "device-12345")
                 .additionalClaim("login-channel", "mobile")
                 .build();
 
         UserInfo c = userInfo("USER-01")
                 .tenant("test-tenant")
                 .role("channel-admin")
-                .additionalClaim("login-device.id", "device-56789")
+                .additionalClaim("login-device-id", "device-56789")
                 .additionalClaim("login-channel", "web")
                 .build();
 

@@ -39,6 +39,8 @@ subprojects {
 
 ext {
     springBootVersion = '2.5.6'
+    springTransactionVersion = '5.3.9'
+    
     h2Version = '1.4.200'
     swaggerVersion = '3.0.0'
     jacksonVersion = '2.13.0'
@@ -81,12 +83,13 @@ ext {
             cache         : [
                     "javax.cache:cache-api:$javaCacheVersion",
                     "org.ehcache:ehcache:$ehcacheVersion",
+                    "org.springframework:spring-tx:${springTransactionVersion}"
             ],
             springBoot    : [
                     "org.springframework.boot:spring-boot-starter-validation:$springBootVersion",
-                    "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-security:$springBootVersion",
+                    "org.springframework.boot:spring-boot-starter-aop:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-cache:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-validation:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion",

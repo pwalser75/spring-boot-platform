@@ -1,7 +1,7 @@
 package ch.frostnova.spring.boot.platform.core.config;
 
 import ch.frostnova.spring.boot.platform.core.auth.TokenAuthenticator;
-import ch.frostnova.spring.boot.platform.core.auth.filter.BearerTokenAuthenticationFilter;
+import ch.frostnova.spring.boot.platform.core.auth.filter.TokenAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,18 +38,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/info",
                         "/actuator/**"
                 ).permitAll()
-                .antMatchers("/v2/api-docs",
-                        "/configuration/ui",
-                        "/swagger-resources/**",
-                        "/configuration/security",
-                        "/swagger-ui.html",
-                        "/webjars/**"
-                ).permitAll()
+                /*     .antMatchers("/v2/api-docs",
+                             "/configuration/ui",
+                             "/swagger-resources/**",
+                             "/configuration/security",
+                             "/swagger-ui",
+                             "/swagger-ui.html",
+                             "/webjars/**"
+                     ).permitAll()*/
                 //TODO .anyRequest().authenticated()
                 .and();
 
         tokenAuthenticator.ifPresent(ta ->
-                httpSecurity.addFilterBefore(new BearerTokenAuthenticationFilter(ta, objectMapper), UsernamePasswordAuthenticationFilter.class)
+                httpSecurity.addFilterBefore(new TokenAuthenticationFilter(ta, objectMapper), UsernamePasswordAuthenticationFilter.class)
         );
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
