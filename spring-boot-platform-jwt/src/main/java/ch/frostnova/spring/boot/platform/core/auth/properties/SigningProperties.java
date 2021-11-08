@@ -138,7 +138,6 @@ public class SigningProperties {
         try (InputStream in = resource.openStream()) {
             String pem = new String(in.readAllBytes(), ISO_8859_1);
             String encoded = pattern.matcher(pem).replaceFirst("$1");
-            System.out.println("KEY: " + encoded);
             return Base64.getMimeDecoder().decode(encoded);
         } catch (Exception ex) {
             throw new IOException("Could not read PEM from " + resource, ex);

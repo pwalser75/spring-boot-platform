@@ -49,8 +49,7 @@ spring:
 ch.frostnova.platform.security:
   auth: jwt
   signing:
-    key-type: RSA
-    public-key: jwt.pub.pem
+    public-key: jwt-pub.pem
     private-key: jwt.pem
 
 # Actuator configuration, expose /health, /info and /metrics endpoints

@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +30,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static ch.frostnova.spring.boot.platform.api.auth.UserInfo.userInfo;
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
 @RestController
 @ConditionalOnBean(JWTSigningService.class)
@@ -49,7 +49,7 @@ public class LoginController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "ok")
     })
-    @GetMapping(path = "/{tenant}/{user}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{tenant}/{user}", produces = TEXT_PLAIN_VALUE)
     public String login(@ApiParam(value = "Tenant id, required")
                         @PathVariable("tenant") @NotBlank String tenant,
                         @ApiParam(value = "User id (subject), required")
