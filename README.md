@@ -164,31 +164,29 @@ During **development** time, two REST endpoints can be activated to work with JW
 The `@RequireRole` annotation can be added to proxied methods to
 - just require the user to be **authenticated** (without specifying any roles)
 - require the user to **have the declare role** in the `UserInfo`.
-- 
-Example usage:
+
+_Example usage:_
 
 ```java
+@RestController
 public class AccessTestController {
 
-    @Autowired
-    private UserInfoProvider userInfoProvider;
+  @GetMapping(value = "/public", produces = TEXT_PLAIN_VALUE)
+  public String publicResource() {
+    return "public";
+  }
 
-    @GetMapping(value = "/public", produces = TEXT_PLAIN_VALUE)
-    public String publicResource() {
-        return "public";
-    }
+  @GetMapping(value = "/private", produces = TEXT_PLAIN_VALUE)
+  @RequireRole
+  public String privateResource() {
+    return "private";
+  }
 
-    @GetMapping(value = "/private", produces = TEXT_PLAIN_VALUE)
-    @RequireRole
-    public String privateResource() {
-        return "private";
-    }
-
-    @GetMapping(value = "/admin", produces = TEXT_PLAIN_VALUE)
-    @RequireRole("ADMIN")
-    public String adminResource() {
-        return "admin";
-    }
+  @GetMapping(value = "/admin", produces = TEXT_PLAIN_VALUE)
+  @RequireRole("ADMIN")
+  public String adminResource() {
+    return "admin";
+  }
 }
 ```
 
