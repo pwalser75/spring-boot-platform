@@ -1,12 +1,17 @@
-description = 'Spring Boot Platform Core'
+description = 'Spring Boot Platform Security'
 
 dependencies {
 
     api project(':spring-boot-platform-core-api')
+    api project(':spring-boot-platform-core')
+    api project(':spring-boot-platform-security-api')
 
     api libs.jackson
     api libs.validation
+    api libs.swagger
 
+    implementation libs.jwt
+    implementation libs.cache
     implementation libs.springBoot
 
     testImplementation libs.testbase

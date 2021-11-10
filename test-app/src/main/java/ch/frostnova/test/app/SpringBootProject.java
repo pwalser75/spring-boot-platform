@@ -1,7 +1,7 @@
 package ch.frostnova.test.app;
 
 import ch.frostnova.spring.boot.platform.core.PlatformCoreConfig;
-import ch.frostnova.spring.boot.platform.core.PlatformJwtConfig;
+import ch.frostnova.spring.boot.platform.core.PlatformSecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableConfigurationProperties
-@Import({PlatformCoreConfig.class, PlatformJwtConfig.class})
+@Import({PlatformCoreConfig.class, PlatformSecurityConfig.class})
 public class SpringBootProject {
 
     public static void main(String[] args) {

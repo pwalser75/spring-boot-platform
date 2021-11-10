@@ -78,9 +78,10 @@ repositories {
 
 dependencies {
 
-    api project(':spring-boot-platform-api')
-    implementation project(':spring-boot-platform-core')
-    implementation project(':spring-boot-platform-jwt')
+    api project(':spring-boot-platform-core-api')
+    api project(':spring-boot-platform-security-api')
+    
+    implementation project(':spring-boot-platform-security')
 
     implementation libs.api
     implementation libs.springBoot

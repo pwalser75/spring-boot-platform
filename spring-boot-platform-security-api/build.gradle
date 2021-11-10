@@ -1,0 +1,8 @@
+description = 'Spring Boot Platform Security API'
+
+dependencies {
+    api libs.swagger
+
+    testImplementation libs.testbase
+    testImplementation libs.jackson
+}

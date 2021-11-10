@@ -1,0 +1,18 @@
+info:
+  app:
+    name: spring-boot-platform-test
+
+spring:
+  cache:
+    type: jcache
+    jcache:
+      provider: org.ehcache.jsr107.EhcacheCachingProvider
+      config: classpath:ehcache.xml
+
+ch.frostnova.platform.logging:
+  access-log.enabled: true
+  performance-log.enabled: true
+
+logging:
+  level:
+    ch.frostnova.spring.boot.platform.jwt.rest.interceptor.LoggingInterceptor: DEBUG

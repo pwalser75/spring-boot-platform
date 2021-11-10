@@ -1,0 +1,3 @@
+ch.frostnova.platform.logging:
+  access-log.enabled: true
+  performance-log.enabled: true

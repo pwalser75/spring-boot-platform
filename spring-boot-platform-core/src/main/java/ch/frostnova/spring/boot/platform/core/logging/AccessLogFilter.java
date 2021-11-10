@@ -3,6 +3,7 @@ package ch.frostnova.spring.boot.platform.core.logging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ import java.util.Optional;
  */
 @Component
 @Order(1)
+@ConditionalOnProperty(value = "ch.frostnova.platform.logging.access-log.enabled", havingValue = "true")
 public class AccessLogFilter implements Filter {
 
     private final static double NS_TO_MS_FACTOR = 1e-6;

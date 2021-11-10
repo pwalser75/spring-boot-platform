@@ -5,7 +5,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -42,7 +42,7 @@ import static java.math.RoundingMode.HALF_EVEN;
  */
 @Aspect
 @Component
-@Profile("performance-logging")
+@ConditionalOnProperty(value = "ch.frostnova.platform.logging.performance-log.enabled", havingValue = "true")
 public class PerformanceLoggingAspect {
 
     private static final Logger log = LoggerFactory.getLogger(PerformanceLoggingAspect.class);
@@ -51,17 +51,16 @@ public class PerformanceLoggingAspect {
     private final static String SYMBOL_RIGHT_ARROW = "->"; // unicode alternative: "\u2192"
 
     /**
-     * Bind aspect to any Spring @Service, @Controller, @RestController and Repository
+     * Bind aspect to any Spring @Controller, @RestController and Repository
      *
      * @param joinPoint aspect join point
      * @return invocation result
      * @throws Throwable invocation exception
      */
     @Around("@within(ch.frostnova.spring.boot.platform.api.logging.PerformanceLogging) " +
-            "|| @within(org.springframework.stereotype.Service) " +
+            "|| @annotation(ch.frostnova.spring.boot.platform.api.logging.PerformanceLogging) " +
             "|| @within(org.springframework.stereotype.Controller) " +
-            "|| @within(org.springframework.web.bind.annotation.RestController) " +
-            "|| this(org.springframework.data.repository.Repository)")
+            "|| @within(org.springframework.web.bind.annotation.RestController)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
 
         String invocation = joinPoint.getSignature().toShortString();

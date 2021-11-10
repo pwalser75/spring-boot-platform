@@ -3,6 +3,19 @@
 Base platform for my Spring Boot projects, includes several essential platform additions useful for any Spring Boot in
 general. Feel free to use these platform additions in your personal projects as well.
 
+# Modules
+
+Published modules:
+
+- `spring-boot-platform-core-api`: Core API classes you may use in your own code
+- `spring-boot-platform-core`: CORE platform module, contains the Task Scope, Access Log and Performance Log
+  functionality
+- `spring-boot-platform-security-api`: Security platform API you may use in your own code
+- `spring-boot-platform-security`: Security platform module, for authorization and authentication with JWT
+
+Internal modules:
+
+- `test-app`: example Spring Boot application using the platform
 ## Features
 
 ### Task Scope
@@ -99,9 +112,7 @@ Aspect-Oriented Programming_).
 It is activated around invocations of the following types:
 
 - any `@Controller` and `@RestController` invocation
-- any `@Service` invocation
-- any `@Repository` invocation
-- any other invocation annotated with the provided `@PerformanceLogging` annotation.
+- any other invocation annotated with the provided `@PerformanceLogging` annotation (which you can annotate on your own components or methods)
 
 Performance logging output:
 
@@ -148,25 +159,44 @@ During **development** time, two REST endpoints can be activated to work with JW
   ones or some that are not yet valid.
 - `UserInfoController`, `dev/user`: can be called by clients to obtain information about the logged in user.
 
-# Modules
+### Role-based authorization using annotations
 
-Published modules:
+The `@RequireRole` annotation can be added to proxied methods to
+- just require the user to be **authenticated** (without specifying any roles)
+- require the user to **have the declare role** in the `UserInfo`.
+- 
+Example usage:
 
-- `spring-boot-platform-api`: API classes you may use in your own code
-- `spring-boot-platform-core`: CORE platform module, contains the Task Scope, Access Log and Performance Log
-  functionality
-- `spring-boot-platform-jwt`: JWT platform additional module, for JWT authentication
+```java
+public class AccessTestController {
 
-Internal modules:
+    @Autowired
+    private UserInfoProvider userInfoProvider;
 
-- `test-app`: example Spring Boot application using the platform
+    @GetMapping(value = "/public", produces = TEXT_PLAIN_VALUE)
+    public String publicResource() {
+        return "public";
+    }
 
-# Build
+    @GetMapping(value = "/private", produces = TEXT_PLAIN_VALUE)
+    @RequireRole
+    public String privateResource() {
+        return "private";
+    }
 
-Build using the Gradle Wrapper:
+    @GetMapping(value = "/admin", produces = TEXT_PLAIN_VALUE)
+    @RequireRole("ADMIN")
+    public String adminResource() {
+        return "admin";
+    }
+}
+```
 
-```shell
-./gradlew
+Unauthenticated or unauthorized access will be reported as warning in the log:
+
+```
+2021-12-31 12:34:56.789  WARN | RequireRoleAuthorizationAspect : Access denied for unauthenticated user
+2021-12-31 12:34:56.789  WARN | RequireRoleAuthorizationAspect : Access denied for user UserInfo{login=test-user, tenant=test-tenant}, required role: 'ADMIN'
 ```
 
 # Setting up JWT authentication
@@ -191,16 +221,63 @@ Do not enter a password (not required).
   openssl ec -in jwt.pem -pubout -outform PEM -out jwt-pub.pem
   ```  
 
-This yields the `jwt.pem` private key and `jwt-pub.pem` public key.
+This yields the `jwt.pem` private key and `jwt-pub.pem` public key, which you ship with your application (see section 'Configuration' above).
 
-In the configuration (`application-yml`), enable JWT authentication using:
+The keys would look like this:
 
-```yaml  
-ch.frostnova.platform.security:  
- auth: jwt 
- signing: 
-   public-key: jwt.pub.pem 
-   private-key: jwt.pem
- ```
+```
+-----BEGIN PRIVATE KEY-----
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg98EzTAAIWQP0moFY
+nSNpdOUM/mJi/DUxdQ2DQf7/MoKhRANCAASJp6WD0kR2nnvn47t5WkIo4r02yvIw
+jab0jPCCNYWqpsR6mlMYrVwJUa9JgE/GvXMpg4cXadM2H0EwFM5zXqB8
+-----END PRIVATE KEY-----
+```
+
+```
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEiaelg9JEdp575+O7eVpCKOK9Nsry
+MI2m9IzwgjWFqqbEeppTGK1cCVGvSYBPxr1zKYOHF2nTNh9BMBTOc16gfA==
+-----END PUBLIC KEY-----
+```
+
+# Configuration
+
+Configuration properties (`application.yml`):
+
+```yaml
+ch.frostnova.platform:
+  logging:
+    access-log.enabled: { boolean, enable access logging, default: false }
+    performance-log.enabled: { boolean, enable performance logging, default: false }
+  security:
+    auth: { authentication method, use "jwt" to enable JWT authentication, default: none }
+    signing:
+      public-key: { resource- or file path for the public key to verify JWT signatures, default: none }
+      private-key: { resource- or file path for the private key to create JWT signatures, default: none }
+```
+
 - `public-key` is required to validate JWT tokens.
 - `private-key` is optional, if configured the application can issue arbitrary JWT tokens in the `/login` endpoint (only for testing - do not use for production. Refer to the swagger-ui for usage).
+
+Example:
+
+```yaml
+ch.frostnova.platform:
+  logging:
+    access-log.enabled: true
+    performance-log.enabled: true
+  security:
+    auth: jwt
+    signing:
+      public-key: jwt.pub.pem
+      private-key: jwt.pem
+```
+
+
+# Build
+
+Build using the Gradle Wrapper:
+
+```shell
+./gradlew
+```
