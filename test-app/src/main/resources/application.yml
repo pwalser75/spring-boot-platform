@@ -48,6 +48,16 @@ ch.frostnova.platform.security:
     public-key: jwt-pub.pem
     private-key: jwt.pem
 
+ch.frostnova.platform:
+  logging:
+    access-log.enabled: true
+    performance-log.enabled: true
+  security:
+    jwt:
+      enabled: true
+      public-key: jwt-pub.pem
+      private-key: jwt.pem
+
 # Actuator configuration, expose /health, /info and /metrics endpoints
 management:
   endpoints:
@@ -55,16 +65,3 @@ management:
       base-path: /
       exposure.include: health,info,metrics
   endpoint.health.show-details: always
-
-# Custom application properties
-app:
-  test:
-    a: 123
-    b: 123.456
-    c: true
-    d: Test
-    e: [ ONE,TWO, THREE ]
-    f:
-    - first
-    - second
-    - third
