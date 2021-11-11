@@ -4,7 +4,7 @@ plugins {
 }
 
 description = 'Spring Boot Platform'
-group = 'ch.frostnova.spring.boot.platform'
+group = 'ch.frostnova'
 version = '1.0.0-SNAPSHOT'
 
 defaultTasks 'clean', 'build'
@@ -18,17 +18,11 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
     }
-}
-
-dependencies {
-    implementation 'com.github.User:Repo:Tag'
 }
 
 subprojects {
     apply plugin: 'java-library'
-
 
     java {
         sourceCompatibility = JavaVersion.VERSION_11
