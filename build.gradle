@@ -4,7 +4,9 @@ plugins {
 }
 
 description = 'Spring Boot Platform'
-group = 'ch.frostnova'
+
+group = 'com.github.pwalser75'
+artifact = 'spring-boot-platform'
 version = '1.0.0-SNAPSHOT'
 
 defaultTasks 'clean', 'build'
