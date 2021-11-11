@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,15 +50,15 @@ public class LoginController {
     })
     @GetMapping(path = "/{tenant}/{user}", produces = TEXT_PLAIN_VALUE)
     public String login(@ApiParam(value = "Tenant id, required")
-                        @PathVariable("tenant") @NotBlank String tenant,
+                            @PathVariable("tenant") @NotBlank String tenant,
                         @ApiParam(value = "User id (subject), required")
-                        @PathVariable("user") @NotBlank String login,
+                            @PathVariable("user") @NotBlank String login,
                         @ApiParam(value = "Set of granted roles (optional)")
-                        @RequestParam(value = "roles", required = false) Set<String> roles,
+                            @RequestParam(value = "roles", required = false) Set<String> roles,
                         @ApiParam(value = "Valid from, in ISO date time format, e.g. 2020-01-01T12:34:56+01:00 (optional, defaults to now)")
-                        @RequestParam(value = "valid-from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime validFrom,
-                        @ApiParam(value = "Validity (duration, optional (default: 1h) in ?d?h?m?s?ms format, e.g. 5d, or 5m30s, or 1h23m56s")
-                        @RequestParam(value = "duration", required = false, defaultValue = "1h") Duration duration,
+                            @RequestParam(value = "valid-from", required = false) OffsetDateTime validFrom,
+                        @ApiParam(value = "Validity (duration, optional (default: 1h) in ?w?d?h?m?s?ms format, e.g. 5d, or 5m30s, or 1h23m56s")
+                            @RequestParam(value = "duration", required = false, defaultValue = "1h") Duration duration,
                         HttpServletRequest request) {
 
         Map<String, String> additionalClaims = new HashMap<>();

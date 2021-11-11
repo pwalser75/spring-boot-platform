@@ -4,55 +4,49 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.Optional;
+import java.util.function.BinaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.time.Duration.ZERO;
-import static java.time.temporal.ChronoUnit.DAYS;
-import static java.time.temporal.ChronoUnit.HOURS;
-import static java.time.temporal.ChronoUnit.MILLIS;
-import static java.time.temporal.ChronoUnit.MINUTES;
-import static java.time.temporal.ChronoUnit.SECONDS;
+import static java.lang.String.join;
 
 @Component
 public class DurationConverter implements Converter<String, Duration> {
 
-    private final static Pattern FORMAT = Pattern.compile("(-)?(?:([0-9]+)d)?(?:([0-9]+)h)?(?:([0-9]+)m)?(?:([0-9]+)s)?(?:([0-9]+)ms)?", Pattern.CASE_INSENSITIVE);
+    private final static BinaryOperator<String> TOKEN_PATTERN = (name, unit) -> String.format("(?:(?<%s>\\d+)\\s*%s)?", name, unit);
+
+    private final static Pattern PATTERN = Pattern.compile("^\\s*([-])?" + join("\\s*",
+            TOKEN_PATTERN.apply("weeks", "w"),
+            TOKEN_PATTERN.apply("days", "d"),
+            TOKEN_PATTERN.apply("hours", "h"),
+            TOKEN_PATTERN.apply("minutes", "m"),
+            TOKEN_PATTERN.apply("seconds", "s"),
+            TOKEN_PATTERN.apply("milliseconds", "ms")
+    ) + "\\s*$");
 
     @Override
-    public Duration convert(String source) {
-        if (source == null) {
+    public Duration convert(String value) {
+        if (value == null || value.isBlank() || value.trim().equals("-")) {
             return null;
         }
-        Matcher matcher = FORMAT.matcher(source);
+        Matcher matcher = PATTERN.matcher(value);
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("Invalid duration format: " + source);
+            throw new IllegalArgumentException(String.format("Illegal duration format '%s', expected '1w2d3h4m5s' or '1w 2d 3h 4m 5s' format (w=weeks,d=days,h=hours,m=minutes,s=seconds)", value));
         }
-        boolean negative = matcher.group(1) != null;
-        int days = parseInt(matcher.group(2));
-        int hours = parseInt(matcher.group(3));
-        int minutes = parseInt(matcher.group(4));
-        int seconds = parseInt(matcher.group(5));
-        int milliseconds = parseInt(matcher.group(6));
 
-        Duration duration = ZERO
-                .plus(days, DAYS)
-                .plus(hours, HOURS)
-                .plus(minutes, MINUTES)
-                .plus(seconds, SECONDS)
-                .plus(milliseconds, MILLIS);
-
-        return negative ? ZERO.minus(duration) : duration;
-    }
-
-    private int parseInt(String number) {
-        if (number == null) {
-            return 0;
-        }
-        number = number.trim();
-        if (number.length() == 0) {
-            return 0;
-        }
-        return Integer.parseInt(number);
+        boolean negative = "-".equals(matcher.group(1));
+        int weeks = Optional.ofNullable(matcher.group("weeks")).map(Integer::parseInt).orElse(0);
+        int days = Optional.ofNullable(matcher.group("days")).map(Integer::parseInt).orElse(0);
+        int hours = Optional.ofNullable(matcher.group("hours")).map(Integer::parseInt).orElse(0);
+        int minutes = Optional.ofNullable(matcher.group("minutes")).map(Integer::parseInt).orElse(0);
+        int seconds = Optional.ofNullable(matcher.group("seconds")).map(Integer::parseInt).orElse(0);
+        int milliseconds = Optional.ofNullable(matcher.group("milliseconds")).map(Integer::parseInt).orElse(0);
+        Duration duration = Duration.ofDays(7 * weeks + days)
+                .plus(Duration.ofHours(hours))
+                .plus(Duration.ofMinutes(minutes))
+                .plus(Duration.ofSeconds(seconds))
+                .plus(Duration.ofMillis(milliseconds));
+        return negative ? Duration.ofSeconds(0).minus(duration) : duration;
     }
 }
