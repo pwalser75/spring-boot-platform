@@ -1,12 +1,12 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
     id "com.github.ben-manes.versions" version "0.39.0"
 }
 
 description = 'Spring Boot Platform'
 
 group = 'com.github.pwalser75'
-artifact = 'spring-boot-platform'
 version = '1.0.0-SNAPSHOT'
 
 defaultTasks 'clean', 'build'
