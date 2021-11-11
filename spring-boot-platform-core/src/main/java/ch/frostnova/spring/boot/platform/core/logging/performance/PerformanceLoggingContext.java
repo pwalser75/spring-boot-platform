@@ -122,6 +122,7 @@ public class PerformanceLoggingContext {
     /**
      * Run code inside the performance logging context
      *
+     * @param <T>            return type
      * @param invocationInfo invocationInfo
      * @param supplier       supplier to execute, required
      */

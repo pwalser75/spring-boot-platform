@@ -6,9 +6,6 @@ plugins {
 
 description = 'Spring Boot Platform'
 
-group = 'com.github.pwalser75'
-version = '1.0.0-SNAPSHOT'
-
 defaultTasks 'clean', 'build'
 
 repositories {
@@ -17,6 +14,10 @@ repositories {
 }
 
 allprojects {
+
+    group = 'com.github.pwalser75'
+    version = '1.0.0-SNAPSHOT'
+
     repositories {
         mavenLocal()
         mavenCentral()
@@ -25,6 +26,7 @@ allprojects {
 }
 
 subprojects {
+
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
 
@@ -41,6 +43,17 @@ subprojects {
 
     artifacts {
         archives sourcesJar
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+        repositories {
+            mavenLocal()
+        }
     }
 }
 
