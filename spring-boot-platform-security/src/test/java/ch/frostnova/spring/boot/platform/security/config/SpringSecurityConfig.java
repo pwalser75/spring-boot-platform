@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security;
+package ch.frostnova.spring.boot.platform.security.config;
 
 import ch.frostnova.spring.boot.platform.security.filter.TokenAuthenticationFilter;
 import ch.frostnova.spring.boot.platform.security.provider.CurrentUserInfo;
@@ -36,22 +36,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/login/**",
-                        "/info",
-                        "/actuator/**"
-                ).permitAll()
-                /*     .antMatchers("/v2/api-docs",
-                             "/configuration/ui",
-                             "/swagger-resources/**",
-                             "/configuration/security",
-                             "/swagger-ui",
-                             "/swagger-ui.html",
-                             "/webjars/**"
-                     ).permitAll()*/
-                //TODO .anyRequest().authenticated()
-                .and();
+        httpSecurity.csrf().disable();
 
         tokenAuthenticator.ifPresent(ta ->
                 httpSecurity.addFilterBefore(new TokenAuthenticationFilter(ta, currentUserInfo, objectMapper), UsernamePasswordAuthenticationFilter.class)
