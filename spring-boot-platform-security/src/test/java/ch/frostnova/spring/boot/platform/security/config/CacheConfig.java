@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.cache;
+package ch.frostnova.spring.boot.platform.security.config;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;

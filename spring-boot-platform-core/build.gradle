@@ -5,9 +5,7 @@ dependencies {
     api project(':spring-boot-platform-core-api')
 
     api libs.jackson
-    api libs.validation
-
-    implementation libs.springBoot
+    api libs.springBoot
 
     testImplementation libs.testbase
     testImplementation libs.springBootTest

@@ -8,15 +8,10 @@ general. Feel free to use these platform additions in your personal projects as 
 Published modules:
 
 - `spring-boot-platform-core-api`: Core API classes you may use in your own code
-- `spring-boot-platform-core`: CORE platform module, contains the Task Scope, Access Log and Performance Log
-  functionality
+- `spring-boot-platform-core`: CORE platform module, contains the Task Scope, Access Log and Performance Log 
 - `spring-boot-platform-security-api`: Security platform API you may use in your own code
 - `spring-boot-platform-security`: Security platform module, for authorization and authentication with JWT
 
-Internal modules:
-
-- `test-app`: example Spring Boot application using the platform
-## Features
 
 ### Access Logging
 

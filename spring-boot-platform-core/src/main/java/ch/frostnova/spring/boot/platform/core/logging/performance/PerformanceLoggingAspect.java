@@ -41,11 +41,11 @@ public class PerformanceLoggingAspect {
      * @param joinPoint aspect join point
      * @return invocation result
      */
-    @Around("(@within(ch.frostnova.spring.boot.platform.api.logging.PerformanceLogging)" +
+    @Around("@within(ch.frostnova.spring.boot.platform.api.logging.PerformanceLogging)" +
             "|| @annotation(ch.frostnova.spring.boot.platform.api.logging.PerformanceLogging)" +
             "|| @within(org.springframework.stereotype.Controller)" +
             "|| @within(org.springframework.web.bind.annotation.RestController)" +
-            "|| @within(org.springframework.scheduling.annotation.Scheduled))"
+            "|| @within(org.springframework.scheduling.annotation.Scheduled)"
     )
     public static Object around(ProceedingJoinPoint joinPoint) {
         String invocation = joinPoint.getSignature().toShortString();
@@ -59,10 +59,10 @@ public class PerformanceLoggingAspect {
      * @return invocation result
      * @throws Throwable invocation exception
      */
-    @Around("(@within(ch.frostnova.spring.boot.platform.api.logging.PerformanceLogging)" +
+    @Around("@within(ch.frostnova.spring.boot.platform.api.logging.PerformanceLogging)" +
             "|| @annotation(ch.frostnova.spring.boot.platform.api.logging.PerformanceLogging)" +
             "|| @within(org.springframework.stereotype.Service)" +
-            "|| @within(org.springframework.stereotype.Component))")
+            "|| @within(org.springframework.stereotype.Component)")
     public static Object aroundIntermediate(ProceedingJoinPoint joinPoint) throws Throwable {
         if (PerformanceLoggingContext.current().isIntermediateInvocation()) {
             String invocation = joinPoint.getSignature().toShortString();
