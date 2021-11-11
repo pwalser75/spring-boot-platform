@@ -1,5 +1,6 @@
 package ch.frostnova.spring.boot.platform.security.error;
 
+import ch.frostnova.spring.boot.platform.core.error.ErrorResponse;
 import ch.frostnova.spring.boot.platform.security.api.exception.UnauthenticatedException;
 import ch.frostnova.spring.boot.platform.security.api.exception.UnauthorizedException;
 import org.springframework.http.HttpHeaders;

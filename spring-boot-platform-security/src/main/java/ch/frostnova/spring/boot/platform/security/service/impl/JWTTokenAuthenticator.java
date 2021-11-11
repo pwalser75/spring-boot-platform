@@ -8,6 +8,7 @@ import ch.frostnova.spring.boot.platform.security.service.TokenAuthenticator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -30,8 +31,7 @@ public class JWTTokenAuthenticator implements TokenAuthenticator {
 
     private Set<String> reservedClaims;
 
-    @Autowired
-    private Logger logger;
+    private final static Logger logger = LoggerFactory.getLogger(JWTTokenAuthenticator.class);
 
     @Autowired
     private JWTVerificationService jwtVerificationService;

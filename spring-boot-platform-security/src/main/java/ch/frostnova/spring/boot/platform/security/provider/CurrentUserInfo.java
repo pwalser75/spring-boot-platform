@@ -1,8 +1,8 @@
 package ch.frostnova.spring.boot.platform.security.provider;
 
+import ch.frostnova.spring.boot.platform.core.scope.TaskScope;
 import ch.frostnova.spring.boot.platform.security.api.UserInfo;
 import ch.frostnova.spring.boot.platform.security.api.UserInfoProvider;
-import ch.frostnova.spring.boot.platform.security.scope.TaskScope;
 import org.slf4j.MDC;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

@@ -9,6 +9,7 @@ import io.jsonwebtoken.Jws;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,8 +36,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @EnableConfigurationProperties
 public class JWTServiceTest {
 
-    @Autowired
-    private Logger logger;
+    private final static Logger logger = LoggerFactory.getLogger(JWTServiceTest.class);
 
     @Autowired
     private JWTSigningService jwtSigningService;

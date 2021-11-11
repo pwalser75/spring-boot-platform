@@ -1,7 +1,7 @@
 package ch.frostnova.spring.boot.platform.security.filter;
 
+import ch.frostnova.spring.boot.platform.core.error.ErrorResponse;
 import ch.frostnova.spring.boot.platform.security.api.UserInfo;
-import ch.frostnova.spring.boot.platform.security.error.ErrorResponse;
 import ch.frostnova.spring.boot.platform.security.provider.CurrentUserInfo;
 import ch.frostnova.spring.boot.platform.security.service.TokenAuthenticator;
 import com.fasterxml.jackson.databind.ObjectMapper;

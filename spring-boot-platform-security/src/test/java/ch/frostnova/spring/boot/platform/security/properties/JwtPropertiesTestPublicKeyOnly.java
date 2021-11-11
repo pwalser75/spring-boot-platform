@@ -38,6 +38,5 @@ public class JwtPropertiesTestPublicKeyOnly {
         PublicKey publicKey = jwtProperties.requirePublicKey();
         assertThat(publicKey).isNotNull();
         assertThat(publicKey.getAlgorithm()).isEqualTo("RSA");
-
     }
 }

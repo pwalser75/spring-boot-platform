@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.error;
+package ch.frostnova.spring.boot.platform.core.error;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

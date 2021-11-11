@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.error;
+package ch.frostnova.spring.boot.platform.core.error;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,6 @@ import java.util.NoSuchElementException;
  */
 @ControllerAdvice
 public class GeneralExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
-
 
     private final static Logger logger = LoggerFactory.getLogger(GeneralExceptionHandlerAdvice.class);
 

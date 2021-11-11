@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.scope;
+package ch.frostnova.spring.boot.platform.core.scope;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

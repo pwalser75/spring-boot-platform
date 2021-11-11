@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.logging;
+package ch.frostnova.spring.boot.platform.core.logging.access;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

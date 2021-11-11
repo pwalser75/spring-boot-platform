@@ -6,13 +6,13 @@ import ch.frostnova.spring.boot.platform.security.service.JWTSigningService;
 import io.jsonwebtoken.Jwts;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.security.PrivateKey;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Date;
@@ -27,8 +27,7 @@ import static java.util.stream.Collectors.toMap;
 @ConditionalOnProperty(value = "ch.frostnova.platform.security.jwt.private-key")
 public class JWTSigningServiceImpl implements JWTSigningService {
 
-    @Autowired
-    private Logger logger;
+    private final static Logger logger = LoggerFactory.getLogger(JWTSigningServiceImpl.class);
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -38,15 +37,12 @@ public class JWTSigningServiceImpl implements JWTSigningService {
 
     @PostConstruct
     public void init() {
-
         jwtProperties.requirePublicKey();
         logger.warn("{} is activated, service can issue self-signed JWT security tokens - do not use in production", getClass().getSimpleName());
     }
 
     @Override
     public String createJWT(UserInfo userInfo, OffsetDateTime validFrom, Duration validity) {
-
-        PrivateKey privateKey = jwtProperties.requirePrivateKey();
 
         return Jwts.builder()
                 .setIssuer(Optional.ofNullable(jwtProperties.getIssuer()).filter(Strings::isNotBlank).orElse(applicationName))

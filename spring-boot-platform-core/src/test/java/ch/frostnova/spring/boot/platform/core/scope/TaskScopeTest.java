@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.scope;
+package ch.frostnova.spring.boot.platform.core.scope;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

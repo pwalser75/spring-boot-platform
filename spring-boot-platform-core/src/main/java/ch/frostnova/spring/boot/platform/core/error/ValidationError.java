@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.error;
+package ch.frostnova.spring.boot.platform.core.error;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.FieldError;

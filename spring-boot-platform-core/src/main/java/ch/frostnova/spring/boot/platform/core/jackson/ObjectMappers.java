@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.jackson;
+package ch.frostnova.spring.boot.platform.core.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;

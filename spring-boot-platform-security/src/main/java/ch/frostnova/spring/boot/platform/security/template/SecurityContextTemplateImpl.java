@@ -1,9 +1,9 @@
 package ch.frostnova.spring.boot.platform.security.template;
 
+import ch.frostnova.spring.boot.platform.core.scope.CheckedRunnable;
+import ch.frostnova.spring.boot.platform.core.scope.CheckedSupplier;
 import ch.frostnova.spring.boot.platform.security.api.UserInfo;
 import ch.frostnova.spring.boot.platform.security.provider.CurrentUserInfo;
-import ch.frostnova.spring.boot.platform.security.scope.CheckedRunnable;
-import ch.frostnova.spring.boot.platform.security.scope.CheckedSupplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

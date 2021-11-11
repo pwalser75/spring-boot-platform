@@ -18,6 +18,65 @@ Internal modules:
 - `test-app`: example Spring Boot application using the platform
 ## Features
 
+### Access Logging
+
+The `AccessLogFilter`: logs the REST API calls (method, path, duration, status). Realized as a **Servlet Filter**.
+
+It will log the following values per request:
+
+- the request **method** (GET, POST, PUT, DELETE,...)
+- the request **URI**
+- the response **HTTP status** (numeric and string identifier)
+- the **duration** of the call
+
+Some of these values will be added to the **MDC** (_Message Diagnostic Context_):
+
+- `ACCESS_LOG_METHOD`
+- `ACCESS_LOG_URI`
+- `ACCESS_LOG_STATUS`
+- `ACCESS_LOG_DURATION_MS`
+
+Example output:
+
+```text
+2021-09-21 21:34:48.977 - POST /api/notes -> 201 CREATED, 40.80 ms
+2021-09-21 21:34:48.991 - GET /api/notes/1101 -> 200 OK, 4.09 ms
+2021-09-21 21:34:48.999 - GET /api/notes -> 200 OK, 5.70 ms
+2021-09-21 21:34:49.007 - PUT /api/notes/1101 -> 204 NO_CONTENT, 3.62 ms
+2021-09-21 21:34:49.012 - GET /api/notes/1101 -> 200 OK, 2.41 ms
+2021-09-21 21:34:49.018 - DELETE /api/notes/1101 -> 204 NO_CONTENT, 4.15 ms
+2021-09-21 21:34:49.020 - DELETE /api/notes/1101 -> 204 NO_CONTENT, 1.25 ms
+2021-09-21 21:34:49.025 - GET /api/notes -> 200 OK, 2.73 ms
+2021-09-21 21:34:49.030 - GET /api/notes/1101 -> 404 NOT_FOUND, 3.53 ms
+2021-09-21 21:34:49.080 - POST /api/notes -> 400 BAD_REQUEST, 8.51 ms
+2021-09-21 21:34:49.125 - POST /api/notes -> 400 BAD_REQUEST, 3.01 ms
+```
+
+Very useful if you want to have a quick look at the traffic, or need to efficiently identify failed requests in a log
+aggregator (filter for access log entries, the get the request id to find other log statements in the context of that
+call).
+
+### Performance Logging
+
+The `PerformanceLoggingAspect` logs the invocation tree and times for performance analysis. Realized using **AOP** (
+Aspect-Oriented Programming).
+
+It is activated around invocations of the following types:
+
+- any direct method invocation within a `@Controller`, `@RestController` or `@Scheduled` annotated bean 
+- any direct invocation annotated with the provided `@PerformanceLogging` annotation on a bean or method 
+- any intermediate (within the aforementioned methods) invocations of any `@Service`, `@Component`, Spring Data `Repository` and `@PerformanceLogging` method.
+
+Performance logging output:
+
+```text
+NotesController.update(..) -> 2.13 ms, self: 0.91 ms
+  + NoteServiceImpl.save(..) -> 1.22 ms, self: 0.30 ms
+    + CrudRepository.findById(..) -> 0.77 ms
+    + CrudRepository.save(..) -> 0.15 ms
+```
+
+
 ### Task Scope
 
 A neat additional Spring CDI scope that acts like a Request scope, but can also be used outside HTTP requests, e.g. when
@@ -66,62 +125,6 @@ try {
 }
 ```
 
-### Access Logging
-
-The `AccessLogFilter`: logs the REST API calls (method, path, duration, status). Realized as a **Servlet Filter**.
-
-It will log the following values per request:
-
-- the request **method** (GET, POST, PUT, DELETE,...)
-- the request **URI**
-- the response **HTTP status** (numeric and string identifier)
-- the **duration** of the call
-
-Some of these values will be added to the **MDC** (_Message Diagnostic Context_):
-
-- `ACCESS_LOG_METHOD`
-- `ACCESS_LOG_URI`
-- `ACCESS_LOG_STATUS`
-- `ACCESS_LOG_DURATION_MS`
-
-Example output:
-
-```text
-2021-09-21 21:34:48.977 - POST /api/notes -> 201 CREATED, 40.80 ms
-2021-09-21 21:34:48.991 - GET /api/notes/1101 -> 200 OK, 4.09 ms
-2021-09-21 21:34:48.999 - GET /api/notes -> 200 OK, 5.70 ms
-2021-09-21 21:34:49.007 - PUT /api/notes/1101 -> 204 NO_CONTENT, 3.62 ms
-2021-09-21 21:34:49.012 - GET /api/notes/1101 -> 200 OK, 2.41 ms
-2021-09-21 21:34:49.018 - DELETE /api/notes/1101 -> 204 NO_CONTENT, 4.15 ms
-2021-09-21 21:34:49.020 - DELETE /api/notes/1101 -> 204 NO_CONTENT, 1.25 ms
-2021-09-21 21:34:49.025 - GET /api/notes -> 200 OK, 2.73 ms
-2021-09-21 21:34:49.030 - GET /api/notes/1101 -> 404 NOT_FOUND, 3.53 ms
-2021-09-21 21:34:49.080 - POST /api/notes -> 400 BAD_REQUEST, 8.51 ms
-2021-09-21 21:34:49.125 - POST /api/notes -> 400 BAD_REQUEST, 3.01 ms
-```
-
-Very useful if you want to have a quick look at the traffic, or need to efficiently identify failed requests in a log
-aggregator (filter for access log entries, the get the request id to find other log statements in the context of that
-call).
-
-### Performance Logging
-
-The `PerformanceLoggingAspect` logs the invocation tree and times for performance analysis. Realized using **AOP**(_
-Aspect-Oriented Programming_).
-
-It is activated around invocations of the following types:
-
-- any `@Controller` and `@RestController` invocation
-- any other invocation annotated with the provided `@PerformanceLogging` annotation (which you can annotate on your own components or methods)
-
-Performance logging output:
-
-```text
-NotesController.update(..) -> 2.13 ms, self: 0.91 ms
-  + NoteServiceImpl.save(..) -> 1.22 ms, self: 0.30 ms
-    + CrudRepository.findById(..) -> 0.77 ms
-    + CrudRepository.save(..) -> 0.15 ms
-```
 
 ### JWT authentication
 

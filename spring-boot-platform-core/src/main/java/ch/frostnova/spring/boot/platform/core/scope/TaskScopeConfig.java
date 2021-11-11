@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.scope;
+package ch.frostnova.spring.boot.platform.core.scope;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;

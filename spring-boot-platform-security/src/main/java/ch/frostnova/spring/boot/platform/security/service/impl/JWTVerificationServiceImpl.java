@@ -8,6 +8,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,7 @@ public class JWTVerificationServiceImpl implements JWTVerificationService {
 
     private final String CACHE_NAME = "jwt-cache";
 
-    @Autowired
-    private Logger logger;
+    private final static Logger logger = LoggerFactory.getLogger(JWTVerificationServiceImpl.class);
 
     @Autowired
     private Optional<TypeSafeCache> typeSafeCache;

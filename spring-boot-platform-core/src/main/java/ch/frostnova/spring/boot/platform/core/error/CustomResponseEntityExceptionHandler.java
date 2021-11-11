@@ -1,4 +1,4 @@
-package ch.frostnova.spring.boot.platform.security.error;
+package ch.frostnova.spring.boot.platform.core.error;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
