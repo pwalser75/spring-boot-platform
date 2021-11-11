@@ -6,7 +6,7 @@ package ch.frostnova.spring.boot.platform.security.api.exception;
  * @author pwalser
  * @since 2021-11-10
  */
-public class UnauthorizedException extends RuntimeException {
+public class UnauthorizedException extends SecurityException {
 
     public UnauthorizedException() {
         this("Access denied: authentication required");

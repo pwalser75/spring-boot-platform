@@ -1,9 +1,3 @@
-info:
-  app:
-    name: "spring-boot-project"
-    description: "Example Spring-Boot Project"
-    version: "1.0.0-SNAPSHOT"
-
 # TLS configuration - enable HTTPS
 server:
   port: 8443
@@ -22,6 +16,8 @@ http.server.port: 8080
 
 # Persistence: datasource/JPA configuration
 spring:
+  application:
+    name: "Example Spring-Boot Project"
   cache:
     type: jcache
     jcache:

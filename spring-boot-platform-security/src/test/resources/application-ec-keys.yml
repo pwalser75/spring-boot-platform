@@ -1,6 +1,5 @@
 # JWT authentication configuration
-ch.frostnova.platform.security:
-  auth: jwt
-  signing:
-    public-key: ec/jwt-pub.pem
-    private-key: ec/jwt.pem
+ch.frostnova.platform.security.jwt:
+  enabled: true
+  public-key: ec/jwt-pub.pem
+  private-key: ec/jwt.pem

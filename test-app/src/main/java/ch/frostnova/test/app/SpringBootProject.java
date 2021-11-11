@@ -1,7 +1,7 @@
 package ch.frostnova.test.app;
 
-import ch.frostnova.spring.boot.platform.core.PlatformCoreConfig;
-import ch.frostnova.spring.boot.platform.core.PlatformSecurityConfig;
+import ch.frostnova.spring.boot.platform.security.PlatformCoreConfig;
+import ch.frostnova.spring.boot.platform.security.PlatformSecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

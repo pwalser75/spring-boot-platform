@@ -1,13 +1,6 @@
-info:
-  app:
-    name: spring-boot-platform-test
-
 spring:
-  cache:
-    type: jcache
-    jcache:
-      provider: org.ehcache.jsr107.EhcacheCachingProvider
-      config: classpath:ehcache.xml
+  application:
+    name: spring-platform-security-test
 
 ch.frostnova.platform.logging:
   access-log.enabled: true

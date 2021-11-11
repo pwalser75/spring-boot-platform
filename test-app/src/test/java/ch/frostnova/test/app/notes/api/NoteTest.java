@@ -11,7 +11,7 @@ import javax.validation.ValidatorFactory;
 import java.util.Locale;
 import java.util.Set;
 
-import static ch.frostnova.spring.boot.platform.core.jackson.ObjectMappers.json;
+import static ch.frostnova.spring.boot.platform.security.jackson.ObjectMappers.json;
 import static java.time.OffsetDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 

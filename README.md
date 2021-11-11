@@ -248,10 +248,14 @@ ch.frostnova.platform:
     access-log.enabled: { boolean, enable access logging, default: false }
     performance-log.enabled: { boolean, enable performance logging, default: false }
   security:
-    auth: { authentication method, use "jwt" to enable JWT authentication, default: none }
-    signing:
+    role-mapping: optional mapping (external role name to list of internal roles) of external roles (as provided by authentication) to internal roles (used in @RequireRole).
+    jwt:
+      enabled: { boolean, enable JWT authentication, default: false }
       public-key: { resource- or file path for the public key to verify JWT signatures, default: none }
       private-key: { resource- or file path for the private key to create JWT signatures, default: none }
+      issuer: { optional issuer name for self-signed JWT tokens, defaults to ${spring.application.name} }
+      claim-tenant: { name of the JWT claim to extract the tenant for the UserInfo, default: "tenant"}
+      claim-roles: { name of the JWT claim to extract the list of roles for the UserInfo, default: "scope"}
 ```
 
 - `public-key` is required to validate JWT tokens.
@@ -265,10 +269,16 @@ ch.frostnova.platform:
     access-log.enabled: true
     performance-log.enabled: true
   security:
-    auth: jwt
-    signing:
-      public-key: jwt.pub.pem
-      private-key: jwt.pem
+    role-mapping:
+      tst-admin: OPERATOR, ADMIN
+      tst-user: USER
+    jwt:
+      enabled: true
+      public-key: ec/jwt-pub.pem
+      private-key: ec/jwt.pem
+      issuer: test-application
+      claim-tenant: tnt
+      claim-roles: rls
 ```
 
 
