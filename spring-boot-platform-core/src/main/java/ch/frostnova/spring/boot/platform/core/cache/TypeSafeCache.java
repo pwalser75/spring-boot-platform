@@ -28,34 +28,42 @@ public abstract class TypeSafeCache<K extends Serializable, V> {
         return cacheManager.isPresent();
     }
 
+    /**
+     * Calculates the internal cache key for the provided key. By default, the internal key is the same as the external.
+     * For more compact keys (which use less memory, and are faster to check for equality), this method can be overridden.
+     *
+     * @param key external key (used when working with this cache), never null
+     * @return internally used cache key, never null
+     */
+    protected Object cacheKey(K key) {
+        return key;
+    }
+
     private Cache getCache() {
         return cacheManager.orElseThrow(() -> new UnsupportedOperationException("caching is disabled")).getCache(cacheName);
     }
 
     public void put(K key, V value) {
-        checkKey(key);
         if (!isEnabled()) {
             return;
         }
-        getCache().put(key, value);
+        getCache().put(internalKey(key), value);
     }
 
     @SuppressWarnings("unchecked")
     public V get(K key) {
-        checkKey(key);
         if (!isEnabled()) {
             return null;
         }
-        return (V) Optional.ofNullable(getCache().get(key))
+        return (V) Optional.ofNullable(getCache().get(internalKey(key)))
                 .map(Cache.ValueWrapper.class::cast)
                 .map(Cache.ValueWrapper::get)
                 .orElse(null);
     }
 
     public void evict(K key) {
-        checkKey(key);
         if (isEnabled()) {
-            getCache().evictIfPresent(key);
+            getCache().evictIfPresent(internalKey(key));
         }
     }
 
@@ -65,9 +73,11 @@ public abstract class TypeSafeCache<K extends Serializable, V> {
         }
     }
 
-    private void checkKey(K key) {
+    private Object internalKey(K key) {
         if (key == null) {
             throw new IllegalArgumentException("Key is required");
         }
+        Object cacheKey = cacheKey(key);
+        return cacheKey;
     }
 }
