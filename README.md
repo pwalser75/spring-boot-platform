@@ -7,16 +7,75 @@ general. Feel free to use these platform additions in your personal projects as 
 
 [![Release](https://jitpack.io/v/ch.frostnova/spring-boot-platform.svg)](https://jitpack.io/#ch.frostnova/spring-boot-platform)
 
-
 ## Modules
 
 Published modules:
 
-- `spring-boot-platform-api`: Platform API classes you may use in your own code (optional)
-- `spring-boot-platform-core`: Core platform module (required)
-- `spring-boot-platform-jwt`: JWT authentication module (optional)
+- `spring-boot-platform-api` <br>Platform API classes you may use in your own code _(optional)_
+- `spring-boot-platform-core`: <br>Core platform module _(required)_
+- `spring-boot-platform-jwt`: <br>JWT authentication module _(optional)_
+
+## Usage
+
+### Gradle
+
+Add the JitPack repository to your build file:
+
+    allprojects {
+      repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+      }
+    }
+
+Add the dependency:
+
+	dependencies {
+	    implementation 'ch.frostnova.spring-boot-platform:spring-boot-platform-core:${springBootPlatformVersion}'
+        implementation 'ch.frostnova.spring-boot-platform:spring-boot-platform-jwt:${springBootPlatformVersion}'
+	}
+
+### Maven
+
+Add the JitPack repository to your build file:
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+Add the dependency
+
+	<dependency>
+	    <groupId>ch.frostnova.spring-boot-platform</groupId>
+	    <artifactId>spring-boot-platform-core</artifactId>
+	    <version>${springBootPlatformVersion}</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>ch.frostnova.spring-boot-platform</groupId>
+	    <artifactId>spring-boot-platform-jwt</artifactId>
+	    <version>${springBootPlatformVersion}</version>
+	</dependency>
+
+
 
 ## Features 
+
+### Pre-configured Spring platform
+
+Contains:
+
+- `spring-boot-starter-web`
+- `spring-boot-starter-validation`
+- `spring-boot-starter-aop`
+- `spring-boot-starter-cache`
+- `spring-boot-starter-security`
+
+The Jackson `ObjectMapper` is preconfigured with the JavaTimeModule and formats.
+
 ### Access Logging
 
 The `AccessLogFilter`: logs the REST API calls (method, path, duration, status). Realized as a **Servlet Filter**.
