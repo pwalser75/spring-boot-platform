@@ -5,8 +5,8 @@ general. Feel free to use these platform additions in your personal projects as 
 
 ## Releases
 
-[![Release](https://jitpack.io/v/ch.frostnova/spring-boot-platform.svg)]
-(https://jitpack.io/#ch.frostnova/spring-boot-platform)
+[![Release](https://jitpack.io/v/ch.frostnova/spring-boot-platform.svg)](https://jitpack.io/#ch.frostnova/spring-boot-platform)
+
 
 ## Modules
 
