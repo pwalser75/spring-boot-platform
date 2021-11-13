@@ -3,16 +3,20 @@
 Base platform for my Spring Boot projects, includes several essential platform additions useful for any Spring Boot in
 general. Feel free to use these platform additions in your personal projects as well.
 
-# Modules
+## Releases
+
+[![Release](https://jitpack.io/v/ch.frostnova/spring-boot-platform.svg)]
+(https://jitpack.io/#ch.frostnova/spring-boot-platform)
+
+## Modules
 
 Published modules:
 
-- `spring-boot-platform-core-api`: Core API classes you may use in your own code
-- `spring-boot-platform-core`: CORE platform module, contains the Task Scope, Access Log and Performance Log 
-- `spring-boot-platform-security-api`: Security platform API you may use in your own code
-- `spring-boot-platform-security`: Security platform module, for authorization and authentication with JWT
+- `spring-boot-platform-api`: Platform API classes you may use in your own code (optional)
+- `spring-boot-platform-core`: Core platform module (required)
+- `spring-boot-platform-jwt`: JWT authentication module (optional)
 
-
+## Features 
 ### Access Logging
 
 The `AccessLogFilter`: logs the REST API calls (method, path, duration, status). Realized as a **Servlet Filter**.
@@ -195,7 +199,7 @@ Unauthenticated or unauthorized access will be reported as warning in the log:
 2021-12-31 12:34:56.789  WARN | RequireRoleAuthorizationAspect : Access denied for user UserInfo{login=test-user, tenant=test-tenant}, required role: 'ADMIN'
 ```
 
-# Setting up JWT authentication
+## Setting up JWT authentication
 
 JWTs (JSON Web Tokens) are used for authentication. For testing purpose, this app  
 contains a REST endpoint where JWT tokens can be issued for any user.
@@ -236,7 +240,7 @@ MI2m9IzwgjWFqqbEeppTGK1cCVGvSYBPxr1zKYOHF2nTNh9BMBTOc16gfA==
 -----END PUBLIC KEY-----
 ```
 
-# Configuration
+## Configuration
 
 Configuration properties (`application.yml`):
 
@@ -279,8 +283,7 @@ ch.frostnova.platform:
       claim-roles: rls
 ```
 
-
-# Build
+## Build
 
 Build using the Gradle Wrapper:
 

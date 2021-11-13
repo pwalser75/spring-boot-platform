@@ -15,7 +15,7 @@ repositories {
 
 allprojects {
 
-    group = 'com.github.pwalser75'
+    group = 'ch.frostnova'
     version = '1.0.0-SNAPSHOT'
 
     repositories {
@@ -96,12 +96,12 @@ ext {
                     "org.springframework.boot:spring-boot-starter-web:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-validation:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-aop:$springBootVersion",
+                    "org.springframework.boot:spring-boot-starter-cache:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-security:$springBootVersion",
+                    "org.springframework:spring-tx:${springTransactionVersion}"
             ],
             springBootTest: [
                     "org.springframework.boot:spring-boot-starter-test:$springBootVersion",
-                    "org.springframework.boot:spring-boot-starter-cache:$springBootVersion",
-                    "org.springframework:spring-tx:${springTransactionVersion}"
             ]
     ]
 }
