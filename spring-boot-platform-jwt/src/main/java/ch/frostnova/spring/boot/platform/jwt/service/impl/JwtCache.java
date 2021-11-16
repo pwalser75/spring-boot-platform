@@ -23,6 +23,11 @@ public class JwtCache extends TypeSafeCache<String, Jws<Claims>> {
         return hashedKey(key);
     }
 
+    @Override
+    protected boolean shouldCacheValue(Jws<Claims> value) {
+        return true;
+    }
+
     private String hashedKey(String key) {
         return Base64.getEncoder().encodeToString(sha256(key));
     }
