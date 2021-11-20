@@ -78,7 +78,7 @@ public class UserInfoTest {
         UserInfo userInfo = userInfo("USER 01")
                 .tenant("test-tenant")
                 .roles(Set.of("PUBLISHER", "Reviewer"))
-                .role("author")
+                .roles("author")
                 .additionalClaims(Map.of("login-device-id", "device-64738", "login-channel", "mobile"))
                 .additionalClaim("prospect", "yes")
                 .build();
@@ -95,7 +95,7 @@ public class UserInfoTest {
     public void shouldAllowNoModificationsToBuilderWhenConsumed() {
         UserInfo.Builder builder = userInfo("USER 01");
         builder.build();
-        assertThatThrownBy(() -> builder.role("additional")).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> builder.roles("additional")).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -114,15 +114,15 @@ public class UserInfoTest {
 
         UserInfo b = userInfo("USER-01")
                 .tenant("test-tenant")
-                .role("author")
-                .role("publisher")
+                .roles("author")
+                .roles("publisher")
                 .additionalClaim("login-device-id", "device-12345")
                 .additionalClaim("login-channel", "mobile")
                 .build();
 
         UserInfo c = userInfo("USER-01")
                 .tenant("test-tenant")
-                .role("channel-admin")
+                .roles("channel-admin")
                 .additionalClaim("login-device-id", "device-56789")
                 .additionalClaim("login-channel", "web")
                 .build();
@@ -157,7 +157,7 @@ public class UserInfoTest {
 
         UserInfo userInfo = userInfo("USER-01")
                 .tenant("test-tenant")
-                .role("channel-admin")
+                .roles("channel-admin")
                 .additionalClaim("login-device-id", "device-56789")
                 .additionalClaim("login-channel", "web")
                 .build();

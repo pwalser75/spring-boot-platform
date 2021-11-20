@@ -59,9 +59,7 @@ public class JWTServiceTest {
 
         UserInfo userInfo = userInfo("test-user")
                 .tenant("test-tenant")
-                .role("RoleA")
-                .role("RoleB")
-                .role("RoleC")
+                .roles("RoleA", "RoleB", "RoleC")
                 .additionalClaim("loginDeviceId", UUID.randomUUID().toString())
                 .additionalClaim("accessChannel", "mobile")
                 .build();

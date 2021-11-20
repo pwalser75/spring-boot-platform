@@ -176,11 +176,15 @@ public class UserInfo {
         }
 
         private Builder set(Consumer<UserInfo> access) {
+            checkConsumed();
+            access.accept(instance);
+            return this;
+        }
+
+        private void checkConsumed() {
             if (consumed) {
                 throw new IllegalStateException("already consumed");
             }
-            access.accept(instance);
-            return this;
         }
 
         public Builder tenant(String tenant) {
@@ -188,30 +192,21 @@ public class UserInfo {
         }
 
         public Builder roles(String... roles) {
-            Arrays.stream(roles).forEach(this::role);
-            return this;
+            return set(x -> x.roles.addAll(Arrays.asList(roles)));
         }
 
         public Builder roles(Set<String> roles) {
-            return set(x -> {
-                x.roles.clear();
-                if (roles != null) {
-                    x.roles.addAll(roles);
-                }
-            });
-        }
-
-        public Builder role(String role) {
-            return set(x -> x.roles.add(role));
+            if (roles == null) {
+                return this;
+            }
+            return set(x -> x.roles.addAll(roles));
         }
 
         public Builder additionalClaims(Map<String, String> additionalClaims) {
-            return set(x -> {
-                x.additionalClaims.clear();
-                if (additionalClaims != null) {
-                    x.additionalClaims.putAll(additionalClaims);
-                }
-            });
+            if (additionalClaims == null) {
+                return this;
+            }
+            return set(x -> x.additionalClaims.putAll(additionalClaims));
         }
 
         public Builder additionalClaim(String key, String value) {

@@ -35,8 +35,7 @@ public class JWTTokenAuthenticatorTest {
 
         UserInfo request = userInfo("test-login")
                 .tenant("test-tenant")
-                .role("RoleA")
-                .role("RoleB")
+                .roles("RoleA", "RoleB")
                 .additionalClaim("loginDeviceId", "device-001")
                 .additionalClaim("accessChannel", "web")
                 .build();
