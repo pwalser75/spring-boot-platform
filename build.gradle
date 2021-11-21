@@ -98,7 +98,10 @@ ext {
                     "org.springframework.boot:spring-boot-starter-aop:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-cache:$springBootVersion",
                     "org.springframework.boot:spring-boot-starter-security:$springBootVersion",
-                    "org.springframework:spring-tx:${springTransactionVersion}"
+                    "org.springframework:spring-tx:${springTransactionVersion}",
+                    "io.springfox:springfox-boot-starter:$swaggerVersion",
+                    "io.springfox:springfox-swagger-ui:$swaggerVersion"
+
             ],
             springBootTest: [
                     "org.springframework.boot:spring-boot-starter-test:$springBootVersion",

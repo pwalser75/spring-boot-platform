@@ -2,4 +2,4 @@ rootProject.name = 'Spring Boot Platform'
 
 include 'spring-boot-platform-api'
 include 'spring-boot-platform-core'
-include 'spring-boot-platform-jwt'
+include 'spring-boot-platform-extension-jwt'

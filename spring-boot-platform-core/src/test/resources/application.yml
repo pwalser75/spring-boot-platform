@@ -1,3 +1,13 @@
-ch.frostnova.platform.logging:
-  access-log.enabled: true
-  performance-log.enabled: true
+application:
+    name: "spring-boot-platform-test"
+    description: "Spring Boot Platform Test"
+    version: "1.2.3"
+
+ch.frostnova.platform:
+  logging:
+    access-log.enabled: true
+    performance-log.enabled: true
+  security:
+    role-mapping:
+      tst-admin: OPERATOR, ADMIN
+      tst-user: USER

@@ -10,7 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 /**
  * Base Exception Handler Advice.
  */
-public class BaseExceptionHandlerAdvice {
+public abstract class BaseExceptionHandlerAdvice {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
