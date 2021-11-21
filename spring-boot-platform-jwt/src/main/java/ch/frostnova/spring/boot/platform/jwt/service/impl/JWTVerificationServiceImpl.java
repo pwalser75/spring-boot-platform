@@ -19,8 +19,6 @@ import java.time.Instant;
 @ConditionalOnProperty(value = "ch.frostnova.platform.security.jwt.public-key")
 public class JWTVerificationServiceImpl implements JWTVerificationService {
 
-    private final String CACHE_NAME = "jwt-cache";
-
     private final static Logger logger = LoggerFactory.getLogger(JWTVerificationServiceImpl.class);
 
     @Autowired
@@ -32,7 +30,6 @@ public class JWTVerificationServiceImpl implements JWTVerificationService {
     @PostConstruct
     public void init() {
         jwtProperties.requirePublicKey();
-        logger.info("JWT caching {}", jwtCache.isEnabled() ? "enabled" : "disabled");
     }
 
     @Override

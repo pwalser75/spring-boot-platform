@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 import static ch.frostnova.spring.boot.platform.api.auth.UserInfo.userInfo;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,12 +43,33 @@ public class JWTTokenAuthenticatorTest {
 
         String token = jwtSigningService.createJWT(request, OffsetDateTime.now(), Duration.of(2, ChronoUnit.HOURS));
 
-        UserInfo userInfo = jwtTokenAuthenticator.authenticate(token);
+        UserInfo userInfo = jwtTokenAuthenticator.authenticate("Bearer " + token);
 
+        assertThat(userInfo).isNotNull();
         assertThat(userInfo.getTenant()).isEqualTo("test-tenant");
         assertThat(userInfo.getLogin()).isEqualTo("test-login");
         assertThat(userInfo.getRoles()).containsExactlyInAnyOrder("RoleA", "RoleB");
         assertThat(userInfo.getAdditionalClaims().get("loginDeviceId")).isEqualTo("device-001");
         assertThat(userInfo.getAdditionalClaims().get("accessChannel")).isEqualTo("web");
+    }
+
+    @Test
+    public void shouldSkipUnknownTokenType() {
+
+        String token = "API-KEY " + UUID.randomUUID();
+
+        UserInfo userInfo = jwtTokenAuthenticator.authenticate(token);
+
+        assertThat(userInfo).isNull();
+    }
+
+    @Test
+    public void shouldSkipUnsupportedBearerTokenType() {
+
+        String token = "Bearer " + UUID.randomUUID();
+
+        UserInfo userInfo = jwtTokenAuthenticator.authenticate(token);
+
+        assertThat(userInfo).isNull();
     }
 }

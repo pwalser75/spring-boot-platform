@@ -1,8 +1,8 @@
 package ch.frostnova.spring.boot.platform.jwt.config;
 
+import ch.frostnova.spring.boot.platform.api.auth.AuthenticationProvider;
+import ch.frostnova.spring.boot.platform.core.auth.AuthenticationFilter;
 import ch.frostnova.spring.boot.platform.core.auth.CurrentUserInfo;
-import ch.frostnova.spring.boot.platform.jwt.filter.TokenAuthenticationFilter;
-import ch.frostnova.spring.boot.platform.jwt.service.TokenAuthenticator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
 import java.util.Optional;
+
+import static java.util.Collections.emptyList;
 
 /**
  * Spring security config
@@ -25,7 +28,7 @@ import java.util.Optional;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private Optional<TokenAuthenticator> tokenAuthenticator;
+    private Optional<List<AuthenticationProvider>> authenticationProviders;
 
     @Autowired
     private CurrentUserInfo currentUserInfo;
@@ -36,12 +39,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.csrf().disable();
-
-        tokenAuthenticator.ifPresent(ta ->
-                httpSecurity.addFilterBefore(new TokenAuthenticationFilter(ta, currentUserInfo, objectMapper), UsernamePasswordAuthenticationFilter.class)
-        );
-        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        httpSecurity.csrf().disable()
+                .addFilterBefore(new AuthenticationFilter(authenticationProviders.orElse(emptyList()), currentUserInfo, objectMapper),
+                        UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override

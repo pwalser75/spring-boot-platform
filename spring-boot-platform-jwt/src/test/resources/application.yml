@@ -8,4 +8,4 @@ ch.frostnova.platform.logging:
 
 logging:
   level:
-    ch.frostnova.spring.boot.platform.jwt.rest.interceptor.LoggingInterceptor: DEBUG
+    ch.frostnova: DEBUG

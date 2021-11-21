@@ -58,7 +58,7 @@ public abstract class TypeSafeCache<K extends Serializable, V> {
             logger.error("cache {} is required but unavailable", cacheName);
             throw new IllegalStateException("caching is required but disabled");
         }
-        logger.info("cache {} is {}", cacheName, enabled ? "enabled" : "disabled");
+        logger.info("cache '{}' {}", cacheName, enabled ? "enabled" : "disabled");
     }
 
     /**

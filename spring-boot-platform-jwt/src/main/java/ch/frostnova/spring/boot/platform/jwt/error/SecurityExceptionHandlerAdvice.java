@@ -1,5 +1,6 @@
 package ch.frostnova.spring.boot.platform.jwt.error;
 
+import ch.frostnova.spring.boot.platform.api.exception.InvalidCredentialsException;
 import ch.frostnova.spring.boot.platform.api.exception.UnauthenticatedException;
 import ch.frostnova.spring.boot.platform.api.exception.UnauthorizedException;
 import ch.frostnova.spring.boot.platform.core.exception.BaseExceptionHandlerAdvice;
@@ -23,6 +24,11 @@ public class SecurityExceptionHandlerAdvice extends BaseExceptionHandlerAdvice {
 
     @ExceptionHandler(UnauthenticatedException.class)
     protected ResponseEntity<Object> handleUnauthenticatedException(UnauthenticatedException ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), UNAUTHORIZED, request);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    protected ResponseEntity<Object> handleInvalidCredentialsException(UnauthorizedException ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), UNAUTHORIZED, request);
     }
 
