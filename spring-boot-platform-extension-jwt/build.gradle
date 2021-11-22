@@ -1,13 +1,11 @@
 description = 'Spring Boot Platform JWT'
 
 dependencies {
-    api libs.swagger
-    api libs.springBoot
+    api libs.platformApi
 
-    implementation project(':spring-boot-platform-core')
+    api project(':spring-boot-platform-api')
+    api project(':spring-boot-platform-core')
     implementation libs.jwt
 
-    testImplementation libs.testbase
-    testImplementation libs.jackson
-    testImplementation libs.springBootTest
+    testImplementation libs.platformTest
 }

@@ -1,6 +1,5 @@
 package ch.frostnova.spring.boot.platform.core.logging.performance;
 
-import ch.frostnova.spring.boot.platform.core.scope.CheckedSupplier;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,7 +23,7 @@ public class RepositoryPerformanceLoggingAspect {
     public static Object aroundIntermediate(ProceedingJoinPoint joinPoint) throws Throwable {
         if (PerformanceLoggingContext.current().isIntermediateInvocation()) {
             String invocation = joinPoint.getSignature().toShortString();
-            return PerformanceLoggingContext.current().execute(invocation, (CheckedSupplier<Object>) joinPoint::proceed);
+            return PerformanceLoggingContext.current().execute(invocation, joinPoint::proceed);
         }
         return joinPoint.proceed();
     }

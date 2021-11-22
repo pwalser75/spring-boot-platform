@@ -24,7 +24,7 @@ public class JwtPropertiesTestPublicKeyOnly {
     public void shouldReadSigningProperties() {
         assertThat(jwtProperties).isNotNull();
         assertThat(jwtProperties.getPrivateKey()).isNull();
-        assertThat(jwtProperties.getPublicKey()).isNotBlank();
+        assertThat(jwtProperties.getPublicKey()).isNotNull();
     }
 
     @Test

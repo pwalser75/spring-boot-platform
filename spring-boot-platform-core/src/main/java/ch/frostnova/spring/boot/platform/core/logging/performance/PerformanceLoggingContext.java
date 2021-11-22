@@ -1,6 +1,5 @@
 package ch.frostnova.spring.boot.platform.core.logging.performance;
 
-import ch.frostnova.spring.boot.platform.core.scope.CheckedRunnable;
 import ch.frostnova.spring.boot.platform.core.scope.CheckedSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,30 +91,6 @@ public class PerformanceLoggingContext {
                     .collect(Collectors.joining("\n")));
             invocations.clear();
             current.remove();
-        }
-    }
-
-
-    /**
-     * Run code inside the performance logging context
-     *
-     * @param invocationInfo invocationInfo
-     * @param runnable       runnable to execute, required
-     */
-    public void execute(String invocationInfo, CheckedRunnable runnable) {
-        enter(invocationInfo);
-
-        Throwable error = null;
-        try {
-            runnable.run();
-        } catch (RuntimeException ex) {
-            error = ex;
-            throw ex;
-        } catch (Throwable ex) {
-            error = ex;
-            throw ex instanceof RuntimeException ? (RuntimeException) ex : new RuntimeException(ex);
-        } finally {
-            exit(error);
         }
     }
 

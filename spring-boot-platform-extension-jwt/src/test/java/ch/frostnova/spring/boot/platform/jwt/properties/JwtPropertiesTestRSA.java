@@ -23,8 +23,8 @@ public class JwtPropertiesTestRSA {
     @Test
     public void shouldReadSigningProperties() {
         assertThat(jwtProperties).isNotNull();
-        assertThat(jwtProperties.getPrivateKey()).isNotBlank();
-        assertThat(jwtProperties.getPublicKey()).isNotBlank();
+        assertThat(jwtProperties.getPrivateKey()).isNotNull();
+        assertThat(jwtProperties.getPublicKey()).isNotNull();
     }
 
     @Test

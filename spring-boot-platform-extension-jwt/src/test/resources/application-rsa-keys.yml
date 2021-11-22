@@ -1,5 +1,5 @@
 # JWT authentication configuration
 ch.frostnova.platform.security.jwt:
   enabled: true
-  public-key: rsa/jwt-pub.pem
-  private-key: rsa/jwt.pem
+  public-key: classpath:rsa/jwt-pub.pem
+  private-key: classpath:rsa/jwt.pem

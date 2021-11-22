@@ -23,8 +23,8 @@ public class JwtPropertiesTestEC {
     @Test
     public void shouldReadSigningProperties() {
         assertThat(jwtProperties).isNotNull();
-        assertThat(jwtProperties.getPrivateKey()).isNotBlank();
-        assertThat(jwtProperties.getPublicKey()).isNotBlank();
+        assertThat(jwtProperties.getPrivateKey()).isNotNull();
+        assertThat(jwtProperties.getPublicKey()).isNotNull();
     }
 
     @Test

@@ -19,6 +19,8 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -79,8 +81,12 @@ public class UserInfoTest {
                 .tenant("test-tenant")
                 .roles(Set.of("PUBLISHER", "Reviewer"))
                 .roles("author")
+                .roles(emptySet())
+                .roles((Set<String>) null)
                 .additionalClaims(Map.of("login-device-id", "device-64738", "login-channel", "mobile"))
                 .additionalClaim("prospect", "yes")
+                .additionalClaims(emptyMap())
+                .additionalClaims(null)
                 .build();
         assertThat(userInfo).isNotNull();
         assertThat(userInfo.isAnonymous()).isFalse();

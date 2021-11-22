@@ -312,13 +312,13 @@ ch.frostnova.platform:
     role-mapping: optional mapping (external role name to list of internal roles) of external roles (as provided by authentication) to internal roles (used in @RequireRole).
     jwt:
       enabled: { boolean, enable JWT authentication, default: false }
-      public-key: { resource- or file path for the public key to verify JWT signatures, default: none }
-      private-key: { resource- or file path for the private key to create JWT signatures, default: none }
+      public-key: { resource for the public key to verify JWT signatures, default: none }
+      private-key: { resource for the private key to create JWT signatures, default: none }
       issuer: { optional issuer name for self-signed JWT tokens, defaults to ${spring.application.name} }
       claim-tenant: { name of the JWT claim to extract the tenant for the UserInfo, default: "tenant"}
       claim-roles: { name of the JWT claim to extract the list of roles for the UserInfo, default: "scope"}
 ```
-
+- the `public-key` and `private-key` can be a `classpath:`, `file:` or `url:` resource.
 - `public-key` is required to validate JWT tokens.
 - `private-key` is optional, if configured the application can issue arbitrary JWT tokens in the `/login` endpoint (only for testing - do not use for production. Refer to the swagger-ui for usage).
 
@@ -335,8 +335,8 @@ ch.frostnova.platform:
       tst-user: USER
     jwt:
       enabled: true
-      public-key: ec/jwt-pub.pem
-      private-key: ec/jwt.pem
+      public-key: classpath:ec/jwt-pub.pem
+      private-key: classpath:ec/jwt.pem
       issuer: test-application
       claim-tenant: tnt
       claim-roles: rls

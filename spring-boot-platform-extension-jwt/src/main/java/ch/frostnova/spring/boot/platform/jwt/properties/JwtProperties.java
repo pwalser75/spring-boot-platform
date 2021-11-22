@@ -3,11 +3,10 @@ package ch.frostnova.spring.boot.platform.jwt.properties;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -38,8 +37,8 @@ public class JwtProperties {
     private final static String DEFAULT_CLAIM_TENANT = "tenant";
     private final static String DEFAULT_CLAIM_ROLES = "scope";
 
-    private String publicKey;
-    private String privateKey;
+    private Resource publicKey;
+    private Resource privateKey;
     private String issuer;
 
     private String claimTenant;
@@ -52,11 +51,11 @@ public class JwtProperties {
     @PostConstruct
     private void init() throws IOException, NoSuchAlgorithmException {
         if (privateKey != null) {
-            resolvedPrivateKey = loadPrivateKey(getResource(privateKey));
+            resolvedPrivateKey = loadPrivateKey(privateKey.getURL());
             signatureAlgorithm = signatureAlgorithmFor(resolvedPrivateKey);
         }
         if (publicKey != null) {
-            resolvedPublicKey = loadPublicKey(getResource(publicKey));
+            resolvedPublicKey = loadPublicKey(publicKey.getURL());
             signatureAlgorithm = signatureAlgorithmFor(resolvedPublicKey);
         }
         if (resolvedPrivateKey != null && resolvedPublicKey != null) {
@@ -78,19 +77,19 @@ public class JwtProperties {
         throw new NoSuchAlgorithmException(String.format("No supported SignatureAlgorithm found for key type '%s'", algorithm));
     }
 
-    public String getPublicKey() {
+    public Resource getPublicKey() {
         return publicKey;
     }
 
-    public void setPublicKey(String publicKey) {
+    public void setPublicKey(Resource publicKey) {
         this.publicKey = publicKey;
     }
 
-    public String getPrivateKey() {
+    public Resource getPrivateKey() {
         return privateKey;
     }
 
-    public void setPrivateKey(String privateKey) {
+    public void setPrivateKey(Resource privateKey) {
         this.privateKey = privateKey;
     }
 
@@ -116,26 +115,6 @@ public class JwtProperties {
 
     public void setClaimRoles(String claimRoles) {
         this.claimRoles = claimRoles;
-    }
-
-    public PrivateKey getResolvedPrivateKey() {
-        return resolvedPrivateKey;
-    }
-
-    public void setResolvedPrivateKey(PrivateKey resolvedPrivateKey) {
-        this.resolvedPrivateKey = resolvedPrivateKey;
-    }
-
-    public PublicKey getResolvedPublicKey() {
-        return resolvedPublicKey;
-    }
-
-    public void setResolvedPublicKey(PublicKey resolvedPublicKey) {
-        this.resolvedPublicKey = resolvedPublicKey;
-    }
-
-    public void setSignatureAlgorithm(SignatureAlgorithm signatureAlgorithm) {
-        this.signatureAlgorithm = signatureAlgorithm;
     }
 
     public PrivateKey requirePrivateKey() {
@@ -194,23 +173,5 @@ public class JwtProperties {
         } catch (Exception ex) {
             throw new IOException("Could not read PEM from " + resource, ex);
         }
-    }
-
-    private URL getResource(String resourcePath) throws IOException {
-        // attempt to locate Java resource
-        URL resource = getClass().getResource("/" + resourcePath);
-        if (resource != null) {
-            return resource;
-        }
-
-        // attempt to locate file
-        File file = new File(resourcePath);
-        if (file.exists()) {
-            if (file.isFile() && !file.canRead()) {
-                throw new IOException("File is not readable: " + resourcePath);
-            }
-            return file.toURI().toURL();
-        }
-        throw new FileNotFoundException(String.format("Resource '%s' not found", resourcePath));
     }
 }

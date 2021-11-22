@@ -1,8 +1,7 @@
 description = 'Spring Boot Platform API'
 
 dependencies {
-    api libs.swagger
+    api libs.platformApi
 
-    testImplementation libs.testbase
-    testImplementation libs.jackson
+    testImplementation libs.platformTest
 }
