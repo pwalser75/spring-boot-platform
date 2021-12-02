@@ -30,9 +30,7 @@ public class ValidationErrorsException extends RuntimeException {
     }
 
     public ValidationErrorsException(List<ValidationError> validationErrors) {
-        for (ValidationError error : validationErrors) {
-            errors.add(error);
-        }
+        errors.addAll(validationErrors);
     }
 
     public List<ValidationError> getErrors() {

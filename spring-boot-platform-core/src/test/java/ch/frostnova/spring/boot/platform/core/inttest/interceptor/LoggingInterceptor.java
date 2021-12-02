@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class LoggingInterceptor implements ClientHttpRequestInterceptor {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private AtomicInteger requestNumberSequence = new AtomicInteger(0);
+    private final AtomicInteger requestNumberSequence = new AtomicInteger(0);
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
@@ -55,7 +55,7 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
     }
 
     /**
-     * Wrapper around ClientHttpResponse, buffers the body so it can be read repeatedly (for logging & consuming the result).
+     * Wrapper around ClientHttpResponse, buffers the body, so it can be read repeatedly (for logging & consuming the result).
      */
     private static class BufferedClientHttpResponse implements ClientHttpResponse {
 

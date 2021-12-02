@@ -20,12 +20,10 @@ import java.util.function.Function;
 public abstract class TypeSafeCache<K extends Serializable, V> {
 
     private final boolean required;
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private Optional<CacheManager> cacheManager;
-
-    private String cacheName;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final String cacheName;
+    @Autowired(required = false)
+    private CacheManager cacheManager;
 
 
     /**
@@ -84,7 +82,7 @@ public abstract class TypeSafeCache<K extends Serializable, V> {
 
     /**
      * Decides whether a particular value should be cached, as by default, only non-null values are cached.
-     * Overriding this method allows to cache null-values, or empty collection values, or conditionally cache
+     * Overriding this method allows caching null-values, or empty collection values, or conditionally cache
      * only special values if requested.
      *
      * @param value value to cache
@@ -101,7 +99,7 @@ public abstract class TypeSafeCache<K extends Serializable, V> {
      * @return optional cache.
      */
     private Optional<Cache> optionalCache() {
-        return cacheManager.map(cm -> cm.getCache(cacheName));
+        return Optional.ofNullable(cacheManager).map(cm -> cm.getCache(cacheName));
     }
 
     /**
@@ -138,7 +136,6 @@ public abstract class TypeSafeCache<K extends Serializable, V> {
      * @param key key, required
      * @return potentially cached value.
      */
-    @SuppressWarnings("unchecked")
     public V get(K key) {
         return get(key, null);
     }
@@ -179,7 +176,7 @@ public abstract class TypeSafeCache<K extends Serializable, V> {
      * Clears the cache, evicting all cached values.
      */
     public void clear() {
-        optionalCache().ifPresent(cache -> cache.clear());
+        optionalCache().ifPresent(Cache::clear);
     }
 
     /**

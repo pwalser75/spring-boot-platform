@@ -42,7 +42,7 @@ public class DurationConverter implements Converter<String, Duration> {
         int minutes = Optional.ofNullable(matcher.group("minutes")).map(Integer::parseInt).orElse(0);
         int seconds = Optional.ofNullable(matcher.group("seconds")).map(Integer::parseInt).orElse(0);
         int milliseconds = Optional.ofNullable(matcher.group("milliseconds")).map(Integer::parseInt).orElse(0);
-        Duration duration = Duration.ofDays(7 * weeks + days)
+        Duration duration = Duration.ofDays(7L * weeks + days)
                 .plus(Duration.ofHours(hours))
                 .plus(Duration.ofMinutes(minutes))
                 .plus(Duration.ofSeconds(seconds))

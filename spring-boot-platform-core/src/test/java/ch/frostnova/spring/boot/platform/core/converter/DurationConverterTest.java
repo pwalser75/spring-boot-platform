@@ -93,7 +93,7 @@ public class DurationConverterTest {
         Integer ms = randomOrEmpty.get();
 
         Duration expected = Duration.ZERO
-                .plus(numberOrZero(w) * 7, DAYS)
+                .plus(numberOrZero(w) * 7L, DAYS)
                 .plus(numberOrZero(d), DAYS)
                 .plus(numberOrZero(h), HOURS)
                 .plus(numberOrZero(m), MINUTES)

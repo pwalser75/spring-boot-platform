@@ -72,14 +72,14 @@ public class RequireRoleAuthorizationAspect {
         log.warn("Access denied for user {}, required role: '{}'", userInfo, requiredRole);
         throw new UnauthorizedException();
     }
-    
+
     private Set<String> resolveRoles(Collection<String> roleClaims) {
         Map<String, Set<String>> roleMapping = securityProperties.getRoleMapping();
         if (roleMapping.isEmpty()) {
-            return roleClaims.stream().collect(toSet());
+            return Set.copyOf(roleClaims);
         }
         return roleClaims.stream().distinct()
-                .map(roleClaim -> roleMapping.get(roleClaim))
+                .map(roleMapping::get)
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
                 .collect(toSet());

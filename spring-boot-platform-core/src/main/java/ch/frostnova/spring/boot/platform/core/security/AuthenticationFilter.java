@@ -48,6 +48,20 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         this.objectMapper = objectMapper;
     }
 
+    private static Authentication authentication(UserInfo userInfo) {
+        if (userInfo == null) {
+            return null;
+        }
+        Set<SimpleGrantedAuthority> grantedAuthorities = userInfo.getRoles().stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(toSet());
+
+        PreAuthenticatedAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(userInfo.getLogin(), null, grantedAuthorities);
+        authentication.setDetails(userInfo);
+        authentication.setAuthenticated(userInfo.isAuthenticated());
+        return authentication;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
 
@@ -97,19 +111,5 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         // could not be authenticated by any provider
         throw new InvalidCredentialsException();
-    }
-
-    private static Authentication authentication(UserInfo userInfo) {
-        if (userInfo == null) {
-            return null;
-        }
-        Set<SimpleGrantedAuthority> grantedAuthorities = userInfo.getRoles().stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(toSet());
-
-        PreAuthenticatedAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(userInfo.getLogin(), null, grantedAuthorities);
-        authentication.setDetails(userInfo);
-        authentication.setAuthenticated(userInfo.isAuthenticated());
-        return authentication;
     }
 }

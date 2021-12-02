@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @SpringBootTest
 @ConfigurationProperties
 @ActiveProfiles("ec-keys")
-public class JwtPropertiesTestEC {
+public class JwtPropertiesECTest {
 
     @Autowired
     private JwtProperties jwtProperties;

@@ -27,8 +27,8 @@ import static java.util.Collections.emptyList;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private Optional<List<AuthenticationProvider>> authenticationProviders;
+    @Autowired(required = false)
+    private List<AuthenticationProvider> authenticationProviders;
 
     @Autowired
     private CurrentUserInfo currentUserInfo;
@@ -40,7 +40,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf().disable()
-                .addFilterBefore(new AuthenticationFilter(authenticationProviders.orElse(emptyList()), currentUserInfo, objectMapper),
+                .addFilterBefore(new AuthenticationFilter(Optional.ofNullable(authenticationProviders).orElse(emptyList()), currentUserInfo, objectMapper),
                         UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

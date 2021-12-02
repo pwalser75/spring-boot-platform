@@ -4,13 +4,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.security.PublicKey;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @ConfigurationProperties
-public class JwtPropertiesTestNoKeys {
+@ActiveProfiles("publickeyonly")
+public class JwtPropertiesPublicKeyOnlyTest {
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -19,7 +24,7 @@ public class JwtPropertiesTestNoKeys {
     public void shouldReadSigningProperties() {
         assertThat(jwtProperties).isNotNull();
         assertThat(jwtProperties.getPrivateKey()).isNull();
-        assertThat(jwtProperties.getPublicKey()).isNull();
+        assertThat(jwtProperties.getPublicKey()).isNotNull();
     }
 
     @Test
@@ -28,7 +33,10 @@ public class JwtPropertiesTestNoKeys {
     }
 
     @Test
-    public void shouldFailWhenRequirePublicKey() {
-        assertThatThrownBy(() -> jwtProperties.requirePublicKey()).isInstanceOf(UnsupportedOperationException.class);
+    public void shouldRequirePublicKey() {
+        assertThatCode(() -> jwtProperties.requirePublicKey()).doesNotThrowAnyException();
+        PublicKey publicKey = jwtProperties.requirePublicKey();
+        assertThat(publicKey).isNotNull();
+        assertThat(publicKey.getAlgorithm()).isEqualTo("RSA");
     }
 }

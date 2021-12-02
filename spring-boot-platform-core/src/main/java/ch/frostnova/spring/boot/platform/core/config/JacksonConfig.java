@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import static ch.frostnova.spring.boot.platform.core.util.ObjectMappers.json;
 
 /**
- * Jackson configuration.
+ * Object Mapper configuration.
  */
 @Configuration
 public class JacksonConfig {

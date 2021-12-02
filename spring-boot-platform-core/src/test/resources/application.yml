@@ -1,7 +1,7 @@
 application:
-    name: "spring-boot-platform-test"
-    description: "Spring Boot Platform Test"
-    version: "1.2.3"
+  name: "spring-boot-platform-test"
+  description: "Spring Boot Platform Test"
+  version: "1.2.3"
 
 ch.frostnova.platform:
   logging:

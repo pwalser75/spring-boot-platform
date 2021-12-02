@@ -22,7 +22,7 @@ public interface AuthenticationProvider {
      * Attempt to authenticate a user. If successful, the {@link UserInfo} will be returned.
      * If not valid (e.g. wrong password, invalid or expired JWT), a {@link InvalidCredentialsException} or
      * other SecurityException shall be thrown.
-     * If not applicable (e.g. expecting 'bearer' authentication but it's something different), null should be returned,
+     * If not applicable (e.g. expecting 'bearer' authentication, but it's something different), null should be returned,
      * allowing to skip this provider and attempting to authenticate using another {@link AuthenticationProvider}.
      *
      * @param authentication value of the HTTP 'Authentication' request header, never null

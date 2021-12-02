@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @SpringBootTest
 @ConfigurationProperties
 @ActiveProfiles("rsa-keys")
-public class JwtPropertiesTestRSA {
+public class JwtPropertiesRSATest {
 
     @Autowired
     private JwtProperties jwtProperties;

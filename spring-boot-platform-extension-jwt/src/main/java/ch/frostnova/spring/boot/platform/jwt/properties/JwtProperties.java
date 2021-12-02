@@ -48,6 +48,47 @@ public class JwtProperties {
     private PublicKey resolvedPublicKey;
     private SignatureAlgorithm signatureAlgorithm;
 
+    private static PrivateKey loadPrivateKey(URL resource) {
+        return loadKey(resource, PKCS8EncodedKeySpec::new, KeyFactory::generatePrivate);
+    }
+
+    private static PublicKey loadPublicKey(URL resource) {
+        return loadKey(resource, X509EncodedKeySpec::new, KeyFactory::generatePublic);
+    }
+
+    private static <E extends EncodedKeySpec, P extends Key> P loadKey(URL resource,
+                                                                       Function<byte[], E> encodedKeySpec,
+                                                                       KeyGenerator<E, P> keyGenerator) {
+        if (resource == null) {
+            throw new IllegalArgumentException("resource is required");
+        }
+        try {
+            E keySpec = encodedKeySpec.apply(loadPEM(resource, PEM_PRIVATE_KEY_PATTERN));
+            for (String algorithm : KEY_ALGORITHMS) {
+
+                KeyFactory kf = KeyFactory.getInstance(algorithm);
+                try {
+                    return keyGenerator.generate(kf, keySpec);
+                } catch (InvalidKeySpecException ex) {
+
+                }
+            }
+            throw new NoSuchAlgorithmException(UNSUPPORTED_KEY_TYPE_MESSAGE);
+        } catch (Exception ex) {
+            throw new RuntimeException("Unable to load private key: " + resource, ex);
+        }
+    }
+
+    private static byte[] loadPEM(URL resource, Pattern pattern) throws IOException {
+        try (InputStream in = resource.openStream()) {
+            String pem = new String(in.readAllBytes(), ISO_8859_1);
+            String encoded = pattern.matcher(pem).replaceFirst("$1");
+            return Base64.getMimeDecoder().decode(encoded);
+        } catch (Exception ex) {
+            throw new IOException("Could not read PEM from " + resource, ex);
+        }
+    }
+
     @PostConstruct
     private void init() throws IOException, NoSuchAlgorithmException {
         if (privateKey != null) {
@@ -129,49 +170,7 @@ public class JwtProperties {
         return signatureAlgorithm;
     }
 
-
-    private static PrivateKey loadPrivateKey(URL resource) {
-        return loadKey(resource, PKCS8EncodedKeySpec::new, (kf, ks) -> kf.generatePrivate(ks));
-    }
-
-    private static PublicKey loadPublicKey(URL resource) {
-        return loadKey(resource, X509EncodedKeySpec::new, (kf, ks) -> kf.generatePublic(ks));
-    }
-
     interface KeyGenerator<E extends EncodedKeySpec, P extends Key> {
         P generate(KeyFactory keyFactory, E encodedKeySpec) throws InvalidKeySpecException;
-    }
-
-    private static <E extends EncodedKeySpec, P extends Key> P loadKey(URL resource,
-                                                                       Function<byte[], E> encodedKeySpec,
-                                                                       KeyGenerator<E, P> keyGenerator) {
-        if (resource == null) {
-            throw new IllegalArgumentException("resource is required");
-        }
-        try {
-            E keySpec = encodedKeySpec.apply(loadPEM(resource, PEM_PRIVATE_KEY_PATTERN));
-            for (String algorithm : KEY_ALGORITHMS) {
-
-                KeyFactory kf = KeyFactory.getInstance(algorithm);
-                try {
-                    return keyGenerator.generate(kf, keySpec);
-                } catch (InvalidKeySpecException ex) {
-
-                }
-            }
-            throw new NoSuchAlgorithmException(UNSUPPORTED_KEY_TYPE_MESSAGE);
-        } catch (Exception ex) {
-            throw new RuntimeException("Unable to load private key: " + resource, ex);
-        }
-    }
-
-    private static byte[] loadPEM(URL resource, Pattern pattern) throws IOException {
-        try (InputStream in = resource.openStream()) {
-            String pem = new String(in.readAllBytes(), ISO_8859_1);
-            String encoded = pattern.matcher(pem).replaceFirst("$1");
-            return Base64.getMimeDecoder().decode(encoded);
-        } catch (Exception ex) {
-            throw new IOException("Could not read PEM from " + resource, ex);
-        }
     }
 }

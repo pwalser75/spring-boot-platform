@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.joining;
 import static org.springframework.http.HttpMethod.GET;
 
 @Component
@@ -28,10 +27,10 @@ public class TestRestClient {
         String url = String.format("%s/dev/login/%s/%s", baseURL, tenant, login);
         Map<String, String> queryParams = new HashMap<>();
         if (additionalClaims != null) {
-            additionalClaims.forEach((k, v) -> queryParams.put(k, v));
+            queryParams.putAll(additionalClaims);
         }
         if (roles != null && !roles.isEmpty()) {
-            queryParams.put("roles", roles.stream().collect(joining(",")));
+            queryParams.put("roles", String.join(",", roles));
         }
         if (!queryParams.isEmpty()) {
             url += "?" + queryParams.keySet().stream().map(key -> String.format("%s=%s", key, queryParams.get(key))).collect(Collectors.joining("&"));

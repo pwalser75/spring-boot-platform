@@ -62,7 +62,7 @@ public final class StringUtils {
     }
 
     /**
-     * Converts a byte array to its hexadecimal (lowecase) representation.
+     * Converts a byte array to its hexadecimal (lowercase) representation.
      *
      * @param data data, required
      * @return hex string

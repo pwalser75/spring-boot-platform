@@ -79,7 +79,7 @@ public class JWTTokenAuthenticator implements AuthenticationProvider {
         logger.debug("Authenticated as: {}", body);
 
         List<?> rawRoleClaims = body.get(jwtProperties.getClaimRoles(), List.class);
-        Set<String> roleClaims = Optional.ofNullable(rawRoleClaims.stream().map(String::valueOf).collect(toSet())).orElse(emptySet());
+        Set<String> roleClaims = Optional.of(rawRoleClaims.stream().map(String::valueOf).collect(toSet())).orElse(emptySet());
         Map<String, String> additionalClaims = new HashMap<>();
         body.forEach((key, value) -> {
             if (!reservedClaims.contains(key)) {

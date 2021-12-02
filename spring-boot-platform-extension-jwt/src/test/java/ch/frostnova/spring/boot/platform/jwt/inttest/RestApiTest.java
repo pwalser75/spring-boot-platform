@@ -61,7 +61,7 @@ public class RestApiTest {
         String jwt = client.login(baseURL(), "test-tenant", "test-user",
                 Set.of("first", "second"),
                 Map.of("login-device-id", "device-64738", "login-channel", "mobile", "prospect", "yes"));
-
+        System.out.println(jwt);
         UserInfo userInfo = client.userInfo(baseURL(), "Bearer " + jwt);
         logger.info("UserInfo: {}", userInfo);
         assertThat(userInfo).isNotNull();

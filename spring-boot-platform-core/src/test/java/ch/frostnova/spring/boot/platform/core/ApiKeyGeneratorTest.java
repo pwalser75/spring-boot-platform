@@ -9,7 +9,7 @@ import java.util.Base64;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ApiKeyGenerator {
+public class ApiKeyGeneratorTest {
 
     @Test
     public void shouldGenerateApiKey() throws NoSuchAlgorithmException {

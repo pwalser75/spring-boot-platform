@@ -18,8 +18,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
-import static java.util.stream.Collectors.joining;
-
 /**
  * User Information object, contains the <code>login</code> (mandatory) and optional <code>tenant</code>,
  * <code>roles</code> and <code>additionalClaims</code> of an anonymous or authenticated user.
@@ -151,12 +149,12 @@ public class UserInfo {
             values.add("tenant=" + tenant);
         }
         if (!roles.isEmpty()) {
-            values.add("roles=" + roles.stream().collect(joining("/")));
+            values.add("roles=" + String.join("/", roles));
         }
         if (isAnonymous()) {
             values.add("authenticated=" + isAuthenticated());
         }
-        stringBuilder.append(values.stream().collect(joining(", ")));
+        stringBuilder.append(String.join(", ", values));
         stringBuilder.append("}");
         return stringBuilder.toString();
     }

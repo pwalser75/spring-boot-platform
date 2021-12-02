@@ -11,6 +11,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ActiveProfiles("ec-keys")
 @SpringBootTest(classes = {TestConfig.class})
 @EnableConfigurationProperties
-public class SigningServiceTestEC extends SigningServiceTest {
+public class SigningServiceECTest extends SigningServiceTest {
 
 }

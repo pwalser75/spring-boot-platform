@@ -12,7 +12,7 @@ public interface CheckedRunnable {
      * @throws Exception optional exception
      */
     void run() throws Throwable;
-    
+
     /**
      * Unchecked execution: execute checked and rethrow any exception as {@link RuntimeException}.
      */

@@ -9,7 +9,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 public class PerformanceLoggingContext {
 
@@ -88,7 +89,7 @@ public class PerformanceLoggingContext {
 
             log.info(invocations.stream()
                     .map(InvocationInfo::toString)
-                    .collect(Collectors.joining("\n")));
+                    .collect(joining("\n")));
             invocations.clear();
             current.remove();
         }

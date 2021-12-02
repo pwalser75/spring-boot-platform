@@ -11,6 +11,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ActiveProfiles("rsa-keys")
 @SpringBootTest(classes = {TestConfig.class})
 @EnableConfigurationProperties
-public class SigningServiceTestRSA extends SigningServiceTest {
+public class SigningServiceRSATest extends SigningServiceTest {
 
 }

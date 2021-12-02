@@ -32,6 +32,20 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 public class UserInfoTest {
 
+    public static ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .setAnnotationIntrospector(new JacksonAnnotationIntrospector())
+                .registerModule(new JavaTimeModule())
+                .setDateFormat(new StdDateFormat())
+                .enable(INDENT_OUTPUT)
+                .enable(ACCEPT_SINGLE_VALUE_AS_ARRAY)
+                .enable(ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+                .disable(WRITE_DATES_AS_TIMESTAMPS)
+                .disable(WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED)
+                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .setSerializationInclusion(NON_EMPTY);
+    }
+
     @Test
     public void shouldGetAnonymous() {
         UserInfo anonymous = anonymous();
@@ -142,7 +156,6 @@ public class UserInfoTest {
         assertThat(c).isEqualTo(b);
 
         assertThat(a.equals(null)).isFalse();
-        assertThat(a.equals(123)).isFalse();
 
         assertThat(a).isNotEqualTo(userInfo("USER-01").build());
         assertThat(a).isNotEqualTo(userInfo("USER-01").tenant("other-tenant").build());
@@ -179,19 +192,5 @@ public class UserInfoTest {
         assertThat(restored.getAdditionalClaims()).isEqualTo(userInfo.getAdditionalClaims());
         assertThat(restored.isAuthenticated()).isEqualTo(userInfo.isAuthenticated());
         assertThat(restored.isAnonymous()).isEqualTo(userInfo.isAnonymous());
-    }
-
-    public static ObjectMapper objectMapper() {
-        return new ObjectMapper()
-                .setAnnotationIntrospector(new JacksonAnnotationIntrospector())
-                .registerModule(new JavaTimeModule())
-                .setDateFormat(new StdDateFormat())
-                .enable(INDENT_OUTPUT)
-                .enable(ACCEPT_SINGLE_VALUE_AS_ARRAY)
-                .enable(ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-                .disable(WRITE_DATES_AS_TIMESTAMPS)
-                .disable(WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED)
-                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
-                .setSerializationInclusion(NON_EMPTY);
     }
 }

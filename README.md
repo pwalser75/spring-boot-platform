@@ -60,9 +60,7 @@ Add the dependency
 	    <version>${springBootPlatformVersion}</version>
 	</dependency>
 
-
-
-## Features 
+## Features
 
 ### Pre-configured Spring platform
 
@@ -121,9 +119,10 @@ Aspect-Oriented Programming).
 
 It is activated around invocations of the following types:
 
-- any direct method invocation within a `@Controller`, `@RestController` or `@Scheduled` annotated bean 
-- any direct invocation annotated with the provided `@PerformanceLogging` annotation on a bean or method 
-- any intermediate (within the aforementioned methods) invocations of any `@Service`, `@Component`, Spring Data `Repository` and `@PerformanceLogging` method.
+- any direct method invocation within a `@Controller`, `@RestController` or `@Scheduled` annotated bean
+- any direct invocation annotated with the provided `@PerformanceLogging` annotation on a bean or method
+- any intermediate (within the aforementioned methods) invocations of any `@Service`, `@Component`, Spring
+  Data `Repository` and `@PerformanceLogging` method.
 
 Performance logging output:
 
@@ -133,7 +132,6 @@ NotesController.update(..) -> 2.13 ms, self: 0.91 ms
     + CrudRepository.findById(..) -> 0.77 ms
     + CrudRepository.save(..) -> 0.15 ms
 ```
-
 
 ### Task Scope
 
@@ -157,6 +155,7 @@ public class TaskScopedComponent {
 ```
 
 Code can be executed in a new task scope execution context (also nesting possible):
+
 ```
 TaskScope.newExecutionContext().execute(() -> {
     // code that runs in a task scope
@@ -182,7 +181,6 @@ try {
     TaskScope.destroy();
 }
 ```
-
 
 ### JWT authentication
 
@@ -218,13 +216,14 @@ During **development** time, two REST endpoints can be activated to work with JW
 - `LoginController`, `dev/login`: can issue valid JWTs for testing. <br>The tenant, login, roles and additional claims,
   as well as the validity (valid-from and duration) can be passed as arguments, to create arbitrary tokens, even expired
   ones or some that are not yet valid.
-- `UserInfoController`, `dev/user`: can be called by clients to obtain information about the logged in user.
+- `UserInfoController`, `dev/user`: can be called by clients to obtain information about the logged-in user.
 
 ### Role-based authorization using annotations
 
 The `@RequireRole` annotation can be added to proxied methods to
+
 - just require the user to be **authenticated** (without specifying any roles)
-- require the user to **have the declare role** in the `UserInfo`.
+- require the user to **have the declared role** in the `UserInfo`.
 
 _Example usage:_
 
@@ -263,7 +262,8 @@ Unauthenticated or unauthorized access will be reported as warning in the log:
 JWTs (JSON Web Tokens) are used for authentication. For testing purpose, this app  
 contains a REST endpoint where JWT tokens can be issued for any user.
 
-Signing and verifying JWTs requires a **Key Pair** (**private key** for **signing**, **public key** for **verifying**).  
+Signing and verifying JWTs requires a **Key Pair** (**private key** for **signing**, **public key** for **verifying**)
+.  
 An example key pair is already included and configured. To create your own key pair, use:
 
 * **For RSA 4096 key:**
@@ -280,7 +280,8 @@ Do not enter a password (not required).
   openssl ec -in jwt.pem -pubout -outform PEM -out jwt-pub.pem
   ```  
 
-This yields the `jwt.pem` private key and `jwt-pub.pem` public key, which you ship with your application (see section 'Configuration' above).
+This yields the `jwt.pem` private key and `jwt-pub.pem` public key, which you ship with your application (see section '
+Configuration' above).
 
 The keys would look like this:
 
@@ -318,9 +319,11 @@ ch.frostnova.platform:
       claim-tenant: { name of the JWT claim to extract the tenant for the UserInfo, default: "tenant"}
       claim-roles: { name of the JWT claim to extract the list of roles for the UserInfo, default: "scope"}
 ```
+
 - the `public-key` and `private-key` can be a `classpath:`, `file:` or `url:` resource.
 - `public-key` is required to validate JWT tokens.
-- `private-key` is optional, if configured the application can issue arbitrary JWT tokens in the `/login` endpoint (only for testing - do not use for production. Refer to the swagger-ui for usage).
+- `private-key` is optional, if configured the application can issue arbitrary JWT tokens in the `/login` endpoint (only
+  for testing - do not use for production. Refer to the swagger-ui for usage).
 
 Example:
 
