@@ -188,6 +188,18 @@ public class TaskScopeExecutionContextTest {
     }
 
     @Test
+    public void testNewInstancePerTaskScope() {
+        TaskScope.init();
+        String uuid1 = taskScopedComponent.getUuid();
+        TaskScope.destroy();
+
+        TaskScope.init();
+        String uuid2 = taskScopedComponent.getUuid();
+
+        assertThat(uuid1).isNotEqualTo(uuid2);
+    }
+
+    @Test
     public void testExecuteInActiveContextThread() {
 
         TaskScope.init();
